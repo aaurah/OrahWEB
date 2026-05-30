@@ -28,7 +28,7 @@ function LoginForm() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password. Try admin@orahweb.com / password123");
+      setError("Invalid email or password.");
       setLoading(false);
     } else {
       router.push(callbackUrl);
@@ -93,9 +93,21 @@ function LoginForm() {
           </form>
 
           <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <p className="text-xs text-blue-700 font-semibold mb-1">Demo credentials</p>
-            <p className="text-xs text-blue-600">Email: <code>admin@orahweb.com</code></p>
-            <p className="text-xs text-blue-600">Password: <code>password123</code></p>
+            <p className="text-xs text-blue-700 font-semibold mb-2">Demo accounts</p>
+            <div className="space-y-2">
+              <div>
+                <p className="text-xs font-medium text-blue-800">Admin</p>
+                <p className="text-xs text-blue-600">
+                  <code>admin@orahweb.com</code> / <code>password123</code>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-blue-800">User</p>
+                <p className="text-xs text-blue-600">
+                  <code>jane@orahweb.com</code> / <code>password123</code>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

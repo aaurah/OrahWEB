@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { addSubmission } from "@/lib/contact-store";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,15 +21,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, email, subject, message } = parsed.data;
-
-    console.log("[Contact Form Submission]", { name, email, subject, message });
+    const submission = addSubmission(parsed.data);
 
     return NextResponse.json(
       {
         success: true,
         message: "Thank you for reaching out! We'll get back to you within 24 hours.",
-        data: { name, email, subject },
+        data: { id: submission.id, name: submission.name, email: submission.email, subject: submission.subject },
       },
       { status: 201 }
     );

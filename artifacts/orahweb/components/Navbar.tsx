@@ -17,6 +17,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const isAdmin = (session?.user as { role?: string })?.role === "admin";
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -51,9 +52,27 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {session ? (
               <>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className={cn(
+                      "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                      pathname.startsWith("/admin")
+                        ? "bg-violet-50 text-violet-700"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    )}
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                    pathname.startsWith("/dashboard")
+                      ? "bg-blue-50 text-blue-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  )}
                 >
                   Dashboard
                 </Link>
@@ -130,10 +149,29 @@ export function Navbar() {
             <div className="pt-2 flex flex-col gap-2">
               {session ? (
                 <>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMenuOpen(false)}
+                      className={cn(
+                        "block px-4 py-2 rounded-lg text-sm font-medium",
+                        pathname.startsWith("/admin")
+                          ? "bg-violet-50 text-violet-700"
+                          : "text-gray-700 hover:bg-gray-100"
+                      )}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
                   <Link
                     href="/dashboard"
                     onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100"
+                    className={cn(
+                      "block px-4 py-2 rounded-lg text-sm font-medium",
+                      pathname.startsWith("/dashboard")
+                        ? "bg-blue-50 text-blue-700"
+                        : "text-gray-700 hover:bg-gray-100"
+                    )}
                   >
                     Dashboard
                   </Link>
