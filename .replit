@@ -30,3 +30,9 @@ externalPort = 8081
 [[ports]]
 localPort = 19637
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+NEXTAUTH_SECRET = "orahweb-dev-secret-key-change-in-prod!"
+NEXTAUTH_URL = "http://localhost:19637"
