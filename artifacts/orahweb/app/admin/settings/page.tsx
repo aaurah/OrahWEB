@@ -24,10 +24,10 @@ export default function AdminSettingsPage() {
   const labelClass = "block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5";
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Platform Settings</h1>
-        <p className="text-gray-400 text-sm mt-1">Configure global platform behaviour and integrations</p>
+    <div className="p-4 sm:p-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Platform Settings</h1>
+        <p className="text-gray-400 text-xs sm:text-sm mt-1">Configure global platform behaviour and integrations</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">

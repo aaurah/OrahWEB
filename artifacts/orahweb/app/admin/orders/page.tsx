@@ -44,13 +44,13 @@ export default function AdminOrdersPage() {
   const totalRefunds = ORDERS.filter((o) => o.status === "refunded").reduce((s, o) => s + o.amount, 0);
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Orders & Transactions</h1>
-        <p className="text-gray-400 text-sm mt-1">All domain purchase transactions</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Orders & Transactions</h1>
+        <p className="text-gray-400 text-xs sm:text-sm mt-1">All domain purchase transactions</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Total Revenue", value: `$${totalRevenue.toFixed(2)}`, color: "text-emerald-400" },
           { label: "Total Orders", value: ORDERS.length.toString(), color: "text-white" },

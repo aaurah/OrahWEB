@@ -79,17 +79,17 @@ export default function AdminTldsPage() {
   };
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="p-4 sm:p-8 space-y-6">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">TLD Manager</h1>
-          <p className="text-gray-400 text-sm mt-1">Configure extensions, pricing, and availability</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">TLD Manager</h1>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">Configure extensions, pricing, and availability</p>
         </div>
         <button
           onClick={() => setShowAdd(true)}
-          className="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+          className="px-3 sm:px-4 py-2 rounded-xl bg-blue-600 text-white text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors shrink-0"
         >
-          + Add Extension
+          + Add
         </button>
       </div>
 

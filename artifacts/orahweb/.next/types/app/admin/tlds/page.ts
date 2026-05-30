@@ -1,8 +1,8 @@
-// File: /home/runner/workspace/artifacts/orahweb/app/checkout/success/page.tsx
-import * as entry from '../../../../../app/checkout/success/page.js'
+// File: /home/runner/workspace/artifacts/orahweb/app/admin/tlds/page.tsx
+import * as entry from '../../../../../app/admin/tlds/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../app/checkout/success/page.js')
+type TEntry = typeof import('../../../../../app/admin/tlds/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{

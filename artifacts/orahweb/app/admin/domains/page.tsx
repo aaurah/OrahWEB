@@ -48,11 +48,11 @@ export default function AdminDomainsPage() {
     setSelected(selected.length === filtered.length ? [] : filtered.map((d) => d.id));
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="p-4 sm:p-8 space-y-6">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Domain Registry</h1>
-          <p className="text-gray-400 text-sm mt-1">{MOCK_DOMAINS.length.toLocaleString()} total domains</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Domain Registry</h1>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">{MOCK_DOMAINS.length.toLocaleString()} total domains</p>
         </div>
         <div className="flex gap-3">
           {selected.length > 0 && (

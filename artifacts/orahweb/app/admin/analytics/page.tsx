@@ -28,13 +28,13 @@ const TOP_COUNTRIES = [
 
 export default function AdminAnalyticsPage() {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Analytics</h1>
-        <p className="text-gray-400 text-sm mt-1">Platform-wide metrics and trends</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Analytics</h1>
+        <p className="text-gray-400 text-xs sm:text-sm mt-1">Platform-wide metrics and trends</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "30-Day Revenue", value: "$284,310", change: "+8.7%" },
           { label: "30-Day Registrations", value: "91,204", change: "+12.4%" },
