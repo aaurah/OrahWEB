@@ -18,22 +18,28 @@ router.post('/stripe/checkout', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
+      submit_type: 'pay',
       line_items: items.map((item) => ({
         price_data: {
           currency: 'usd',
           unit_amount: Math.round(item.price * 100),
           product_data: {
-            name: item.domain,
-            description: `Domain registration for ${item.domain}`,
-            metadata: { domain: item.domain },
+            name: `${item.domain} — Domain Registration`,
+            description: `One-time domain registration · Powered by OrahWeb`,
+            images: [],
+            metadata: { domain: item.domain, provider: 'OrahWeb' },
           },
         },
         quantity: 1,
       })),
+      custom_text: {
+        submit: { message: 'Your domain will be registered instantly upon payment.' },
+      },
       success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/domains`,
       metadata: {
         domains: items.map((i) => i.domain).join(','),
+        platform: 'OrahWeb',
       },
     });
 
