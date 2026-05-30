@@ -1,23 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-
-const DEMO_USERS = [
-  {
-    id: "1",
-    name: "Admin User",
-    email: "admin@orahweb.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-    role: "admin",
-  },
-  {
-    id: "2",
-    name: "Jane Doe",
-    email: "jane@orahweb.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-    role: "user",
-  },
-];
+import { registeredUsers } from "@/lib/users";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -33,8 +17,8 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = DEMO_USERS.find(
-          (u) => u.email === credentials.email
+        const user = registeredUsers.find(
+          (u) => u.email.toLowerCase() === credentials.email.toLowerCase()
         );
 
         if (!user) return null;

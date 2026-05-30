@@ -78,10 +78,10 @@ export function Navbar() {
                   Sign in
                 </Link>
                 <Link
-                  href="/domains"
+                  href="/signup"
                   className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
                 >
-                  Search Domains
+                  Get Started
                 </Link>
               </>
             )}

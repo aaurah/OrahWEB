@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/Button";
-import { Suspense } from "react";
 
 function LoginForm() {
   const router = useRouter();
@@ -28,19 +27,22 @@ function LoginForm() {
     });
 
     if (result?.error) {
-      setError("Invalid email or password. Try admin@orahweb.com / password123");
+      setError("Invalid email or password. Please try again.");
       setLoading(false);
     } else {
       router.push(callbackUrl);
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all";
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 group mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
               <span className="text-white font-bold">O</span>
             </div>
             <span className="font-bold text-2xl text-gray-900">
@@ -48,41 +50,51 @@ function LoginForm() {
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-          <p className="text-sm text-gray-500 mt-2">Sign in to your account</p>
+          <p className="text-sm text-gray-500 mt-2">Sign in to your OrahWeb account</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Email
+                Email Address
               </label>
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="admin@orahweb.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="you@example.com"
+                className={inputClass}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <a href="#" className="text-xs text-blue-600 hover:underline font-medium">
+                  Forgot password?
+                </a>
+              </div>
               <input
                 type="password"
                 required
+                autoComplete="current-password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className={inputClass}
               />
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
                 {error}
               </div>
             )}
@@ -92,17 +104,36 @@ function LoginForm() {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <p className="text-xs text-blue-700 font-semibold mb-1">Demo credentials</p>
-            <p className="text-xs text-blue-600">Email: <code>admin@orahweb.com</code></p>
-            <p className="text-xs text-blue-600">Password: <code>password123</code></p>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-100" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-white px-3 text-xs text-gray-400">Demo account</span>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-xl border border-blue-100 p-4 space-y-1">
+            <p className="text-xs font-semibold text-blue-800">Admin access</p>
+            <button
+              type="button"
+              onClick={() => setForm({ email: "admin@orahweb.com", password: "password123" })}
+              className="text-xs text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors"
+            >
+              Click to fill admin credentials
+            </button>
           </div>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Back to{" "}
-          <Link href="/" className="text-blue-600 hover:underline font-medium">
-            OrahWeb home
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="text-blue-600 hover:underline font-semibold">
+            Create one for free
+          </Link>
+        </p>
+        <p className="text-center text-sm text-gray-400 mt-3">
+          <Link href="/" className="hover:text-gray-600 transition-colors">
+            ← Back to OrahWeb
           </Link>
         </p>
       </div>
