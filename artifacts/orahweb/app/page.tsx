@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Section, SectionHeader } from "@/components/Layout";
+import { useCart } from "@/lib/cart";
 
 const POPULAR_TLDS = [
   { ext: ".web3", price: 9.99, hot: true, color: "from-violet-500 to-purple-600" },
@@ -85,6 +86,8 @@ function DomainSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ domain: string; available: boolean; price: number }[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const { addItem, items } = useCart();
+  const inCart = (domain: string) => items.some((i) => i.id === domain);
 
   const search = (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,10 +148,22 @@ function DomainSearch() {
               </div>
               {available ? (
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-gray-800">${price}/yr</span>
-                  <button className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity">
-                    Add
-                  </button>
+                  <span className="text-sm font-bold text-gray-800">${price}</span>
+                  {inCart(domain) ? (
+                    <span className="px-4 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Added
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => addItem({ id: domain, domain, price })}
+                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+                    >
+                      Add
+                    </button>
+                  )}
                 </div>
               ) : (
                 <button className="px-4 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-xs font-medium hover:bg-gray-100 transition-colors">
