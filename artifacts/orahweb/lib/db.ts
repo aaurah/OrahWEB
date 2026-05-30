@@ -73,4 +73,141 @@ export async function updateLastLogin(email: string) {
   );
 }
 
+// ─── Domains ────────────────────────────────────────────────────────────────
+
+export async function initDomainsTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS orahweb_domains (
+      id            SERIAL PRIMARY KEY,
+      user_id       INTEGER REFERENCES orahweb_users(id) ON DELETE SET NULL,
+      session_id    TEXT UNIQUE,
+      domain_name   TEXT NOT NULL,
+      tld           TEXT NOT NULL,
+      type          TEXT NOT NULL DEFAULT 'traditional',
+      status        TEXT NOT NULL DEFAULT 'active',
+      customer_email TEXT,
+      purchased_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      expires_at    TIMESTAMPTZ
+    );
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS orahweb_dns_records (
+      id          SERIAL PRIMARY KEY,
+      domain_id   INTEGER NOT NULL REFERENCES orahweb_domains(id) ON DELETE CASCADE,
+      record_type TEXT NOT NULL,
+      name        TEXT NOT NULL,
+      value       TEXT NOT NULL,
+      ttl         INTEGER NOT NULL DEFAULT 3600,
+      created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+}
+
+const WEB3_TLDS = new Set([
+  "crypto","web3","nft","dao","wallet","bitcoin","eth","blockchain",
+  "x","888","zil","coin","token","defi","meta","metaverse",
+]);
+
+function detectDomainType(tld: string): string {
+  return WEB3_TLDS.has(tld.toLowerCase()) ? "web3" : "traditional";
+}
+
+export async function saveDomainPurchase(
+  sessionId: string,
+  domains: string[],
+  customerEmail: string | null,
+  userId: number | null
+) {
+  await initDomainsTable();
+  const saved = [];
+  for (const domain of domains) {
+    const parts = domain.split(".");
+    const tld = parts[parts.length - 1];
+    const type = detectDomainType(tld);
+    const expiresAt = type === "traditional"
+      ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+      : null;
+
+    try {
+      const result = await pool.query(
+        `INSERT INTO orahweb_domains
+           (session_id, domain_name, tld, type, status, customer_email, user_id, expires_at)
+         VALUES ($1, $2, $3, $4, 'active', $5, $6, $7)
+         ON CONFLICT (session_id) DO NOTHING
+         RETURNING *`,
+        [sessionId + "_" + domain, domain, tld, type, customerEmail, userId, expiresAt]
+      );
+      if (result.rows[0]) {
+        await pool.query(
+          `INSERT INTO orahweb_dns_records (domain_id, record_type, name, value, ttl)
+           VALUES ($1,'NS','@','ns1.orahweb.com',86400),
+                  ($1,'NS','@','ns2.orahweb.com',86400)`,
+          [result.rows[0].id]
+        );
+        saved.push(result.rows[0]);
+      }
+    } catch {
+      // Skip duplicates
+    }
+  }
+  return saved;
+}
+
+export async function getUserDomains(userId: number) {
+  await initDomainsTable();
+  const result = await pool.query(
+    `SELECT d.*,
+            COALESCE(
+              TO_CHAR(d.expires_at, 'Mon DD, YYYY'),
+              'Never'
+            ) AS expires_label,
+            (SELECT COUNT(*) FROM orahweb_dns_records r WHERE r.domain_id = d.id) AS dns_count
+     FROM orahweb_domains d
+     WHERE d.user_id = $1
+     ORDER BY d.purchased_at DESC`,
+    [userId]
+  );
+  return result.rows;
+}
+
+export async function getDomainByName(domainName: string, userId: number) {
+  await initDomainsTable();
+  const result = await pool.query(
+    `SELECT * FROM orahweb_domains WHERE domain_name = $1 AND user_id = $2`,
+    [domainName, userId]
+  );
+  return result.rows[0] ?? null;
+}
+
+export async function getDnsRecords(domainId: number) {
+  const result = await pool.query(
+    `SELECT * FROM orahweb_dns_records WHERE domain_id = $1 ORDER BY record_type, name`,
+    [domainId]
+  );
+  return result.rows;
+}
+
+export async function addDnsRecord(
+  domainId: number,
+  recordType: string,
+  name: string,
+  value: string,
+  ttl: number
+) {
+  const result = await pool.query(
+    `INSERT INTO orahweb_dns_records (domain_id, record_type, name, value, ttl)
+     VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+    [domainId, recordType.toUpperCase(), name || "@", value, ttl]
+  );
+  return result.rows[0];
+}
+
+export async function deleteDnsRecord(recordId: number, domainId: number) {
+  await pool.query(
+    `DELETE FROM orahweb_dns_records WHERE id = $1 AND domain_id = $2`,
+    [recordId, domainId]
+  );
+}
+
 export default pool;

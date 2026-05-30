@@ -12,7 +12,11 @@ function SuccessContent() {
 
   useEffect(() => {
     if (!sessionId) { setLoading(false); return; }
-    fetch(`/api/stripe/session/${sessionId}`)
+    fetch('/api/checkout/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId }),
+    })
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
@@ -58,7 +62,7 @@ function SuccessContent() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
-            <span className="text-gray-500 text-sm">Loading order details…</span>
+            <span className="text-gray-500 text-sm">Saving your domain…</span>
           </div>
         )}
 

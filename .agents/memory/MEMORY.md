@@ -1,0 +1,3 @@
+- [Auth & user storage](auth-users.md) — Users stored in PostgreSQL (orahweb_users), NOT in-memory array; auth reads from DB via lib/db.ts
+- [Domain purchase flow](domain-purchase-flow.md) — Purchases saved via POST /api/checkout/complete (Next.js) which calls Express /api/stripe/session/:id then saves to orahweb_domains table
+- [API routing split](api-routing.md) — Express (port 8080) owns /api/stripe/*; Next.js owns all other /api/* routes; API_BASE_URL=http://localhost:8080
