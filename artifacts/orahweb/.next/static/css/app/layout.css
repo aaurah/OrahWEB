@@ -1224,6 +1224,9 @@ h1, h2, h3, h4, h5, h6{
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
 }
+.border-white\/10{
+  border-color: rgb(255 255 255 / 0.1);
+}
 .border-t-transparent{
   border-top-color: transparent;
 }
@@ -2213,6 +2216,10 @@ h1, h2, h3, h4, h5, h6{
 .hover\:bg-red-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-white\/20:hover{
+  background-color: rgb(255 255 255 / 0.2);
 }
 
 .hover\:text-amber-300:hover{

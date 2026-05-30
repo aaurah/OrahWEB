@@ -87,7 +87,7 @@ export default function DomainsPage() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search your name or keyword…"
+                placeholder="e.g. myname, satoshi, web3brand…"
                 className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-blue-300 focus:outline-none focus:border-white/50 focus:bg-white/15 transition-all text-lg"
               />
             </div>
@@ -99,6 +99,37 @@ export default function DomainsPage() {
               {loading ? "Searching…" : "Search"}
             </Button>
           </form>
+          <p className="mt-4 text-blue-300 text-sm">
+            Type your name above → click Search → pick your domains → add to cart → pay with Stripe
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {["satoshi", "myname", "web3brand", "cryptoking"].map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => {
+                  setQuery(ex);
+                  setTimeout(() => {
+                    const name = ex.toLowerCase();
+                    setLoading(true);
+                    setTimeout(() => {
+                      setResults(
+                        ALL_TLDS.map((t) => ({
+                          domain: `${name}${t.ext}`,
+                          available: Math.random() > 0.35,
+                          price: t.price,
+                        }))
+                      );
+                      setLoading(false);
+                    }, 600);
+                  }, 0);
+                }}
+                className="px-3 py-1.5 rounded-full bg-white/10 text-blue-200 text-xs font-medium hover:bg-white/20 transition-colors border border-white/10"
+              >
+                Try "{ex}"
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

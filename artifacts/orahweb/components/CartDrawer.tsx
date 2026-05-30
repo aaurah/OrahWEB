@@ -26,7 +26,12 @@ export function CartDrawer() {
       if (!res.ok) throw new Error(data.error || 'Checkout failed');
       if (data.url) {
         clearCart();
-        window.location.href = data.url;
+        // Navigate the top-level frame so Stripe checkout works inside the Replit preview iframe
+        if (window.top && window.top !== window) {
+          window.top.location.href = data.url;
+        } else {
+          window.location.href = data.url;
+        }
       }
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');
