@@ -7,9 +7,9 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
+  { href: "/domains", label: "Domains" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -38,7 +38,7 @@ export function Navbar() {
                 href={href}
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                  pathname === href
+                  pathname === href || pathname.startsWith(href + "/")
                     ? "bg-blue-50 text-blue-700"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 )}
@@ -53,9 +53,14 @@ export function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                    pathname === "/dashboard"
+                      ? "bg-blue-50 text-blue-700"
+                      : "text-gray-700 hover:bg-gray-100"
+                  )}
                 >
-                  Dashboard
+                  My Domains
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
@@ -73,10 +78,10 @@ export function Navbar() {
                   Sign in
                 </Link>
                 <Link
-                  href="/contact"
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:opacity-90 transition-opacity shadow-sm"
+                  href="/domains"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
                 >
-                  Get Started
+                  Search Domains
                 </Link>
               </>
             )}
@@ -88,24 +93,9 @@ export function Navbar() {
             aria-label="Toggle menu"
           >
             <div className="w-5 h-4 flex flex-col justify-between">
-              <span
-                className={cn(
-                  "block h-0.5 bg-gray-900 rounded transition-all",
-                  menuOpen && "rotate-45 translate-y-1.5"
-                )}
-              />
-              <span
-                className={cn(
-                  "block h-0.5 bg-gray-900 rounded transition-all",
-                  menuOpen && "opacity-0"
-                )}
-              />
-              <span
-                className={cn(
-                  "block h-0.5 bg-gray-900 rounded transition-all",
-                  menuOpen && "-rotate-45 -translate-y-1.5"
-                )}
-              />
+              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "rotate-45 translate-y-1.5")} />
+              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "opacity-0")} />
+              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "-rotate-45 -translate-y-1.5")} />
             </div>
           </button>
         </div>
@@ -119,9 +109,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 className={cn(
                   "block px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                  pathname === href
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-gray-600 hover:bg-gray-100"
+                  pathname === href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-100"
                 )}
               >
                 {label}
@@ -130,35 +118,20 @@ export function Navbar() {
             <div className="pt-2 flex flex-col gap-2">
               {session ? (
                 <>
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100"
-                  >
-                    Dashboard
+                  <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
+                    My Domains
                   </Link>
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="w-full px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-700"
-                  >
+                  <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium">
                     Sign out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100"
-                  >
+                  <Link href="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                     Sign in
                   </Link>
-                  <Link
-                    href="/contact"
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium text-center"
-                  >
-                    Get Started
+                  <Link href="/domains" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold text-center">
+                    Search Domains
                   </Link>
                 </>
               )}

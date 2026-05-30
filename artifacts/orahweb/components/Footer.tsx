@@ -1,10 +1,23 @@
 import Link from "next/link";
 
 const FOOTER_LINKS = {
+  Domains: [
+    { label: "Search Domains", href: "/domains" },
+    { label: "Web3 Extensions", href: "/domains?category=web3" },
+    { label: "Traditional TLDs", href: "/domains?category=traditional" },
+    { label: "Pricing", href: "/pricing" },
+  ],
   Company: [
-    { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
+    { label: "About Us", href: "/about" },
+    { label: "Blog", href: "#" },
+    { label: "Careers", href: "#" },
     { label: "Contact", href: "/contact" },
+  ],
+  Developers: [
+    { label: "API Docs", href: "#" },
+    { label: "SDK", href: "#" },
+    { label: "Smart Contracts", href: "#" },
+    { label: "GitHub", href: "#" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "#" },
@@ -13,12 +26,14 @@ const FOOTER_LINKS = {
   ],
 };
 
+const CHAINS = ["Ethereum", "Polygon", "Solana"];
+
 export function Footer() {
   return (
     <footer className="bg-gray-950 text-gray-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
+          <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 group w-fit">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">O</span>
@@ -28,19 +43,17 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed max-w-xs">
-              Building digital experiences that inspire and perform. We turn
-              your vision into a fast, beautiful, and scalable web presence.
+              The domain platform for the decentralized web. Own your name forever — on blockchain and beyond.
             </p>
-            <div className="mt-6 flex gap-4">
-              {["Twitter", "LinkedIn", "GitHub"].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  className="text-xs font-medium hover:text-white transition-colors"
-                >
-                  {s}
-                </a>
-              ))}
+            <div className="mt-5">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Supported chains</p>
+              <div className="flex gap-2 flex-wrap">
+                {CHAINS.map((c) => (
+                  <span key={c} className="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full">
+                    {c}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -50,10 +63,7 @@ export function Footer() {
               <ul className="space-y-2">
                 {links.map(({ label, href }) => (
                   <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-sm hover:text-white transition-colors"
-                    >
+                    <Link href={href} className="text-sm hover:text-white transition-colors">
                       {label}
                     </Link>
                   </li>
@@ -64,12 +74,8 @@ export function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs">
-            &copy; {new Date().getFullYear()} OrahWeb. All rights reserved.
-          </p>
-          <p className="text-xs">
-            Built with Next.js 14 &amp; Tailwind CSS
-          </p>
+          <p className="text-xs">&copy; {new Date().getFullYear()} OrahWeb, Inc. All rights reserved.</p>
+          <p className="text-xs">Not financial advice. Domains are digital assets.</p>
         </div>
       </div>
     </footer>

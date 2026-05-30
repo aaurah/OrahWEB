@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import type { Metadata } from "next";
 import { Section } from "@/components/Layout";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
@@ -14,17 +13,16 @@ const CONTACT_INFO = [
       </svg>
     ),
     label: "Email",
-    value: "hello@orahweb.com",
+    value: "support@orahweb.com",
   },
   {
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
       </svg>
     ),
-    label: "Location",
-    value: "San Francisco, CA · Remote-first",
+    label: "Community",
+    value: "discord.gg/orahweb",
   },
   {
     icon: (
@@ -37,24 +35,32 @@ const CONTACT_INFO = [
   },
 ];
 
+const TOPICS = [
+  "Domain registration question",
+  "Wallet / crypto records",
+  "Decentralized website hosting",
+  "Transfer or recovery",
+  "Enterprise / bulk domains",
+  "API & developer support",
+  "Other",
+];
+
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", topic: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, subject: form.topic }),
       });
-
-      if (!res.ok) throw new Error("Submission failed");
+      if (!res.ok) throw new Error();
       setStatus("success");
-      setForm({ name: "", email: "", subject: "", message: "" });
+      setForm({ name: "", email: "", topic: "", message: "" });
     } catch {
       setStatus("error");
     }
@@ -65,12 +71,12 @@ export default function ContactPage() {
 
   return (
     <>
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-violet-900 text-white">
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-indigo-900 to-violet-900 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(124,58,237,0.3),_transparent_60%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <h1 className="text-4xl sm:text-5xl font-bold">Get in touch</h1>
           <p className="mt-5 text-lg text-blue-100 max-w-xl leading-relaxed">
-            Tell us about your project and we&apos;ll get back to you within one business day.
+            Questions about domains, transfers, wallet records, or anything else — we&apos;re here to help.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent" />
@@ -80,9 +86,9 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Contact info</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Contact & Support</h2>
               <p className="text-sm text-gray-500 leading-relaxed">
-                We&apos;re a remote-first team — reach out and we&apos;ll connect wherever works for you.
+                Whether it&apos;s a technical issue, billing question, or domain transfer — reach out and we&apos;ll sort it.
               </p>
             </div>
             {CONTACT_INFO.map(({ icon, label, value }) => (
@@ -91,13 +97,20 @@ export default function ContactPage() {
                   {icon}
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    {label}
-                  </p>
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{label}</p>
                   <p className="text-sm font-medium text-gray-800 mt-0.5">{value}</p>
                 </div>
               </div>
             ))}
+            <div className="bg-gradient-to-br from-blue-50 to-violet-50 border border-blue-100 rounded-2xl p-5">
+              <p className="text-sm font-semibold text-blue-900 mb-1">Looking for docs?</p>
+              <p className="text-xs text-blue-700 leading-relaxed">
+                Visit our developer docs for API references, smart contract addresses, and integration guides.
+              </p>
+              <a href="#" className="inline-block mt-3 text-xs font-semibold text-blue-600 hover:text-blue-800 underline underline-offset-2">
+                Read the docs →
+              </a>
+            </div>
           </div>
 
           <div className="lg:col-span-2">
@@ -109,83 +122,41 @@ export default function ContactPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Message sent!</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Message received!</h3>
                   <p className="text-gray-500 mb-6">We&apos;ll get back to you within 24 hours.</p>
-                  <Button variant="outline" onClick={() => setStatus("idle")}>
-                    Send another message
-                  </Button>
+                  <Button variant="outline" onClick={() => setStatus("idle")}>Send another message</Button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">Send us a message</h2>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Full Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        placeholder="Jane Smith"
-                        className={inputClass}
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                      <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jane Smith" className={inputClass} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Email <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        placeholder="jane@company.com"
-                        className={inputClass}
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Email <span className="text-red-500">*</span></label>
+                      <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jane@example.com" className={inputClass} />
                     </div>
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                      Subject <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={form.subject}
-                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      placeholder="New website for my startup"
-                      className={inputClass}
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Topic <span className="text-red-500">*</span></label>
+                    <select required value={form.topic} onChange={(e) => setForm({ ...form, topic: e.target.value })} className={inputClass}>
+                      <option value="">Select a topic...</option>
+                      {TOPICS.map((t) => <option key={t} value={t}>{t}</option>)}
+                    </select>
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                      Message <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      required
-                      rows={5}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      placeholder="Tell us about your project — what you need, your timeline, and any other details..."
-                      className={inputClass + " resize-none"}
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Message <span className="text-red-500">*</span></label>
+                    <textarea required rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Describe your question or issue in detail..." className={inputClass + " resize-none"} />
                   </div>
-
                   {status === "error" && (
                     <p className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-xl">
                       Something went wrong. Please try again or email us directly.
                     </p>
                   )}
-
                   <div className="flex justify-end pt-2">
-                    <Button type="submit" size="lg" loading={status === "loading"}>
-                      Send Message
-                    </Button>
+                    <Button type="submit" size="lg" loading={status === "loading"}>Send Message</Button>
                   </div>
                 </form>
               )}
