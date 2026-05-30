@@ -103,26 +103,6 @@ function LoginForm() {
               Sign in
             </Button>
           </form>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100" />
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-white px-3 text-xs text-gray-400">Demo account</span>
-            </div>
-          </div>
-
-          <div className="bg-blue-50 rounded-xl border border-blue-100 p-4 space-y-1">
-            <p className="text-xs font-semibold text-blue-800">Admin access</p>
-            <button
-              type="button"
-              onClick={() => setForm({ email: "admin@orahweb.com", password: "password123" })}
-              className="text-xs text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors"
-            >
-              Click to fill admin credentials
-            </button>
-          </div>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">

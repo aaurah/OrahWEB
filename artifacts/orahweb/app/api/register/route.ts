@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { registeredUsers } from "@/lib/users";
+import { findUserByEmail, createUser } from "@/lib/db";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required").max(80),
@@ -22,11 +22,8 @@ export async function POST(req: Request) {
     }
 
     const { name, email, password } = parsed.data;
-    const normalised = email.toLowerCase().trim();
 
-    const existing = registeredUsers.find(
-      (u) => u.email.toLowerCase() === normalised
-    );
+    const existing = await findUserByEmail(email);
     if (existing) {
       return NextResponse.json(
         { error: "An account with this email already exists." },
@@ -35,21 +32,14 @@ export async function POST(req: Request) {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const newUser = {
-      id: String(Date.now()),
-      name: name.trim(),
-      email: normalised,
-      passwordHash,
-      role: "user" as const,
-    };
-
-    registeredUsers.push(newUser);
+    await createUser(name, email, passwordHash);
 
     return NextResponse.json(
       { success: true, message: "Account created successfully." },
       { status: 201 }
     );
-  } catch {
+  } catch (err: unknown) {
+    console.error("Register error:", err);
     return NextResponse.json(
       { error: "Internal server error." },
       { status: 500 }

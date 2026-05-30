@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { registeredUsers } from "@/lib/users";
+import { findUserByEmail, updateLastLogin } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -11,27 +11,22 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "you@orahweb.com" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = registeredUsers.find(
-          (u) => u.email.toLowerCase() === credentials.email.toLowerCase()
-        );
-
+        const user = await findUserByEmail(credentials.email);
         if (!user) return null;
 
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.passwordHash
-        );
-
+        const isValid = await bcrypt.compare(credentials.password, user.password_hash);
         if (!isValid) return null;
 
+        await updateLastLogin(credentials.email);
+
         return {
-          id: user.id,
+          id: String(user.id),
           name: user.name,
           email: user.email,
           role: user.role,
