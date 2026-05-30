@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/lib/cart";
 
 const NAV_LINKS = [
   { href: "/domains", label: "Domains" },
@@ -17,6 +18,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { count, setIsOpen } = useCart();
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -49,6 +51,20 @@ export function Navbar() {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+              aria-label="Cart"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z" />
+              </svg>
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {count > 9 ? '9+' : count}
+                </span>
+              )}
+            </button>
             {session ? (
               <>
                 <Link

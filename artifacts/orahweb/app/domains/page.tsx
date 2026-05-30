@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/Button";
+import { useCart } from "@/lib/cart";
 
 const ALL_TLDS = [
   { ext: ".crypto", price: 19.99, category: "web3", desc: "The original Web3 identity domain", hot: true },
@@ -39,6 +40,9 @@ export default function DomainsPage() {
   const [category, setCategory] = useState("all");
   const [results, setResults] = useState<{ domain: string; available: boolean; price: number }[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const { addItem, items } = useCart();
+
+  const inCart = (domain: string) => items.some((i) => i.id === domain);
 
   const filtered = ALL_TLDS.filter(
     (t) => category === "all" || t.category === category
@@ -61,6 +65,10 @@ export default function DomainsPage() {
     }, 900);
   };
 
+  const handleAddToCart = (domain: string, price: number) => {
+    addItem({ id: domain, domain, price });
+  };
+
   return (
     <>
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-indigo-900 to-violet-900 text-white">
@@ -79,20 +87,19 @@ export default function DomainsPage() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="yourname, yourproject, yourbrand..."
-                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-blue-300 text-base focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                placeholder="Search your name or keyword…"
+                className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-blue-300 focus:outline-none focus:border-white/50 focus:bg-white/15 transition-all text-lg"
               />
             </div>
             <Button
               type="submit"
-              loading={loading}
-              className="px-8 py-4 bg-white text-blue-700 hover:bg-blue-50 font-semibold rounded-2xl text-base"
+              disabled={loading}
+              className="px-6 py-4 rounded-xl bg-white text-blue-900 font-bold text-base hover:bg-blue-50 transition-colors shadow-lg disabled:opacity-70 whitespace-nowrap"
             >
-              Search
+              {loading ? "Searching…" : "Search"}
             </Button>
           </form>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent" />
       </div>
 
       <div className="bg-gray-50 min-h-screen">
@@ -100,12 +107,12 @@ export default function DomainsPage() {
           {results ? (
             <>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">
-                  Results for <span className="text-blue-600">&ldquo;{query}&rdquo;</span>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Results for <span className="text-blue-600">"{query}"</span>
                 </h2>
                 <button
-                  onClick={() => setResults(null)}
-                  className="text-sm text-gray-500 hover:text-gray-700 underline"
+                  onClick={() => { setResults(null); setQuery(""); }}
+                  className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
                 >
                   Clear results
                 </button>
@@ -127,9 +134,21 @@ export default function DomainsPage() {
                     {available ? (
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-gray-900 text-sm">${price}</span>
-                        <button className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90">
-                          Add to cart
-                        </button>
+                        {inCart(domain) ? (
+                          <span className="px-3.5 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            Added
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleAddToCart(domain, price)}
+                            className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+                          >
+                            Add to cart
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full">
@@ -200,7 +219,13 @@ export default function DomainsPage() {
                               {cat === "web3" ? " one-time" : "/yr"}
                             </span>
                           </span>
-                          <button className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold">
+                          <button
+                            onClick={() => {
+                              setQuery(ext.replace(".", ""));
+                              search({ preventDefault: () => {} } as any);
+                            }}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold"
+                          >
                             Search
                           </button>
                         </div>
