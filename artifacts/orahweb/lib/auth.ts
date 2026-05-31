@@ -45,6 +45,13 @@ const DEMO_USERS = [
   },
 ];
 
+export const PUBLIC_USERS = DEMO_USERS.map(({ id, name, email, role }) => ({
+  id,
+  name,
+  email,
+  role,
+}));
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
