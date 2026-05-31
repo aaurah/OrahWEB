@@ -1,15 +1,18 @@
 import Link from "next/link";
 
 const FOOTER_LINKS = {
+  Domains: [
+    { label: "Search Domains", href: "/admin/domains" },
+    { label: "Web3 Extensions", href: "/admin/domains" },
+    { label: "TLD Pricing", href: "/admin/domains" },
+  ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
     { label: "Contact", href: "/contact" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
   ],
 };
 
@@ -28,8 +31,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed max-w-xs">
-              Building digital experiences that inspire and perform. We turn
-              your vision into a fast, beautiful, and scalable web presence.
+              Register blockchain and traditional domains. Own your identity on
+              the decentralized web — no renewals, no censorship, no middlemen.
             </p>
             <div className="mt-6 flex gap-4">
               {["Twitter", "LinkedIn", "GitHub"].map((s) => (

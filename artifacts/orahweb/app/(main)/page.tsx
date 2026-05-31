@@ -1,193 +1,222 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "@/components/Button";
-import { Card, CardHeader } from "@/components/Card";
-import { Section, SectionHeader } from "@/components/Layout";
+import { TLDS } from "@/lib/domain-store";
+import { HeroSearch } from "./_hero-search";
 
 export const metadata: Metadata = {
-  title: "OrahWeb — Modern Digital Solutions",
+  title: "OrahWeb — Your name. Your domain. Forever.",
   description:
-    "OrahWeb builds fast, beautiful, and scalable websites and web applications for ambitious businesses.",
+    "Register blockchain and traditional domains. Own your identity on the decentralized web — no renewals, no censorship, no middlemen.",
 };
 
-const FEATURES = [
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    title: "Blazing Fast",
-    description:
-      "Every site we build is optimized for Core Web Vitals — sub-second load times that keep users engaged.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    title: "Secure by Design",
-    description:
-      "Authentication, authorization, and data protection built into every layer of your application.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-      </svg>
-    ),
-    title: "Pixel-Perfect Design",
-    description:
-      "Fully responsive, accessible interfaces that look stunning on every screen size and device.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-      </svg>
-    ),
-    title: "Built to Scale",
-    description:
-      "Architecture that grows with your business — from MVP to millions of users without a rebuild.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    ),
-    title: "SEO Optimized",
-    description:
-      "Structured metadata, server-side rendering, and semantic HTML that search engines love.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: "Ongoing Support",
-    description:
-      "We don't disappear after launch. Dedicated support, updates, and improvements for the long term.",
-  },
+const STATS = [
+  { value: "4.2M+", label: "Domains registered" },
+  { value: "180+", label: "TLDs available" },
+  { value: "650K+", label: "Active wallets" },
+  { value: "$0", label: "Annual renewal for Web3 domains" },
 ];
 
-const STATS = [
-  { value: "150+", label: "Projects Delivered" },
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "5x", label: "Average ROI" },
-  { value: "< 1s", label: "Avg. Load Time" },
+const WEB3_TLDS = [
+  { tld: ".crypto", desc: "The original Web3 standard", price: "Free forever", web3: true },
+  { tld: ".wallet", desc: "Your payment identity", price: "Free forever", web3: true },
+  { tld: ".nft", desc: "For creators & collectors", price: "Free forever", web3: true },
+  { tld: ".dao", desc: "Decentralized organizations", price: "Free forever", web3: true },
+  { tld: ".web3", desc: "The next internet", price: "Free forever", web3: true },
+  { tld: ".blockchain", desc: "Immutable identity", price: "Free forever", web3: true },
 ];
+
+const TRADITIONAL_FEATURED = TLDS.filter((t) =>
+  ["com", "io", "ai", "dev", "app", "co"].includes(t.tld)
+);
 
 export default function HomePage() {
   return (
-    <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-violet-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(124,58,237,0.4),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(37,99,235,0.4),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 sm:py-40">
-          <div className="max-w-3xl">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-widest uppercase text-blue-200 mb-8">
-              Next.js 14 · TypeScript · Tailwind
+    <div className="bg-gray-950 text-white">
+      {/* Hero */}
+      <section className="relative overflow-hidden min-h-[85vh] flex items-center">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-violet-950 via-blue-950 to-gray-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(120,40,200,0.5),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_50%,rgba(37,99,235,0.2),transparent)]" />
+
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-semibold tracking-widest uppercase mb-10">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            Web3 Domains Now Available
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-6">
+            Your name.
+            <br />
+            <span className="text-white">Your domain. </span>
+            <span className="bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
+              Forever.
             </span>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-              We build the web
-              <br />
-              <span className="bg-gradient-to-r from-blue-300 to-violet-300 bg-clip-text text-transparent">
-                your users love.
-              </span>
-            </h1>
-            <p className="mt-8 text-xl text-blue-100 leading-relaxed max-w-xl">
-              OrahWeb crafts fast, modern, and scalable digital products — from
-              marketing sites to complex web applications.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/services">
-                <Button size="lg" variant="primary">
-                  Explore Services
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:border-white hover:bg-white/10 bg-transparent"
-                >
-                  Talk to Us
-                </Button>
-              </Link>
-            </div>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-lg sm:text-xl text-blue-200/80 leading-relaxed max-w-2xl mx-auto mb-12">
+            Register blockchain and traditional domains. Own your identity on
+            the decentralized web — no renewals, no censorship, no middlemen.
+          </p>
+
+          {/* Search */}
+          <div className="flex justify-center">
+            <HeroSearch />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </section>
 
-      <Section className="bg-white pt-10 pb-10">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-          {STATS.map(({ value, label }) => (
-            <div key={label} className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-                {value}
+      {/* Stats */}
+      <section className="bg-gray-900/60 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {STATS.map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                  {value}
+                </div>
+                <div className="mt-1.5 text-sm text-gray-400">{label}</div>
               </div>
-              <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="bg-gray-50">
-        <SectionHeader
-          eyebrow="Why OrahWeb"
-          title="Everything you need to succeed online"
-          description="We combine technical excellence with design precision to deliver websites and apps that drive real results."
-          center
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((feature) => (
-            <Card key={feature.title} hover className="flex flex-col gap-4">
-              <CardHeader
-                icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
-              />
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="bg-white">
-        <div className="bg-gradient-to-r from-blue-600 to-violet-600 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-blue-200">
-          <h2 className="text-3xl sm:text-4xl font-bold">
-            Ready to build something great?
-          </h2>
-          <p className="mt-4 text-blue-100 text-lg max-w-xl mx-auto">
-            Let&apos;s talk about your project. No commitment, no pressure —
-            just a conversation.
+      {/* Browse Extensions */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center mb-14">
+          <p className="text-xs font-bold tracking-widest uppercase text-blue-400 mb-4">
+            Browse Extensions
           </p>
-          <div className="mt-8 flex flex-wrap gap-4 justify-center">
-            <Link href="/contact">
-              <Button
-                size="lg"
-                className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg"
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Find your perfect ending
+          </h2>
+          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+            From blockchain-native Web3 extensions to classic TLDs — we have
+            every domain you need.
+          </p>
+        </div>
+
+        {/* Web3 TLDs */}
+        <div className="mb-10">
+          <h3 className="text-xs font-bold tracking-widest uppercase text-violet-400 mb-4">
+            Web3 · Blockchain
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {WEB3_TLDS.map(({ tld, desc, price }) => (
+              <div
+                key={tld}
+                className="bg-gray-900 border border-violet-500/20 rounded-xl p-4 hover:border-violet-400/50 hover:bg-gray-800 transition-all group"
               >
-                Start a Project
-              </Button>
+                <p className="text-lg font-bold text-violet-300 group-hover:text-violet-200 mb-1">
+                  {tld}
+                </p>
+                <p className="text-xs text-gray-500 mb-2 leading-snug">{desc}</p>
+                <p className="text-xs font-semibold text-green-400">{price}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Traditional TLDs */}
+        <div>
+          <h3 className="text-xs font-bold tracking-widest uppercase text-blue-400 mb-4">
+            Traditional · Classic
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {TRADITIONAL_FEATURED.map((t) => (
+              <div
+                key={t.tld}
+                className="bg-gray-900 border border-blue-500/20 rounded-xl p-4 hover:border-blue-400/50 hover:bg-gray-800 transition-all group"
+              >
+                <p className="text-lg font-bold text-blue-300 group-hover:text-blue-200 mb-1">
+                  .{t.tld}
+                </p>
+                <p className="text-xs text-gray-500 mb-2">{t.category}</p>
+                <p className="text-xs font-semibold text-gray-300">
+                  ${t.price.toFixed(2)}/yr
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Web3 */}
+      <section className="bg-gray-900/50 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold tracking-widest uppercase text-green-400 mb-4">
+              Why Web3 Domains
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Own it. Forever.
+            </h2>
+            <p className="text-gray-400 text-lg max-w-xl mx-auto">
+              Traditional domains are rented. Web3 domains are yours — stored on
+              the blockchain, controlled by your wallet.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "🔐",
+                title: "Self-Sovereign",
+                desc: "Your private key, your domain. No registrar can take it away.",
+              },
+              {
+                icon: "♾️",
+                title: "No Renewals",
+                desc: "Pay once, own forever. No annual fees, no expiry, no surprises.",
+              },
+              {
+                icon: "🌐",
+                title: "Censorship-Resistant",
+                desc: "Stored on a public blockchain. No single entity controls it.",
+              },
+            ].map(({ icon, title, desc }) => (
+              <div
+                key={title}
+                className="bg-gray-900 border border-white/5 rounded-2xl p-8 text-center"
+              >
+                <div className="text-4xl mb-4">{icon}</div>
+                <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="bg-gradient-to-r from-violet-900/60 to-blue-900/60 border border-violet-500/20 rounded-3xl p-12 sm:p-16 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Claim your Web3 identity today
+          </h2>
+          <p className="text-blue-200/80 text-lg max-w-xl mx-auto mb-8">
+            Search your name across hundreds of TLDs — Web3 and traditional.
+            No account required to browse.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              href="/contact"
+              className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg shadow-violet-900/40"
+            >
+              Get in Touch
             </Link>
-            <Link href="/about">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/40 text-white bg-transparent hover:bg-white/10 hover:border-white"
-              >
-                Learn About Us
-              </Button>
+            <Link
+              href="/admin/domains"
+              className="px-7 py-3.5 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/10 transition-colors"
+            >
+              Browse Domains
             </Link>
           </div>
         </div>
-      </Section>
-    </>
+      </section>
+    </div>
   );
 }
