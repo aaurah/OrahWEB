@@ -87,5 +87,5 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET ?? "orahweb-dev-secret-change-in-production",
+  secret: process.env.NEXTAUTH_SECRET,
 };

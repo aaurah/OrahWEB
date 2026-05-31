@@ -7,24 +7,18 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session?.user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     return NextResponse.json({
-      id: (session.user as { id?: string }).id ?? null,
+      id: session.user.id,
       name: session.user.name,
       email: session.user.email,
-      role: (session.user as { role?: string }).role ?? "user",
+      role: session.user.role,
       avatar: session.user.image ?? null,
     });
   } catch (error) {
     console.error("[User API Error]", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

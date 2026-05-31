@@ -59,8 +59,9 @@ export default function ContactForm() {
     }
   };
 
+  const isLoading = status === "loading";
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all";
+    "w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-50";
 
   return (
     <>
@@ -126,6 +127,7 @@ export default function ContactForm() {
                       <input
                         type="text"
                         required
+                        disabled={isLoading}
                         value={form.name}
                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                         placeholder="Jane Smith"
@@ -139,6 +141,7 @@ export default function ContactForm() {
                       <input
                         type="email"
                         required
+                        disabled={isLoading}
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                         placeholder="jane@company.com"
@@ -154,6 +157,7 @@ export default function ContactForm() {
                     <input
                       type="text"
                       required
+                      disabled={isLoading}
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
                       placeholder="New website for my startup"
@@ -168,6 +172,7 @@ export default function ContactForm() {
                     <textarea
                       required
                       rows={5}
+                      disabled={isLoading}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       placeholder="Tell us about your project — what you need, your timeline, and any other details..."

@@ -40,7 +40,7 @@ export default async function DashboardPage() {
     redirect("/login?callbackUrl=/dashboard");
   }
 
-  const isAdmin = (session.user as { role?: string }).role === "admin";
+  const isAdmin = session.user.role === "admin";
 
   return (
     <>

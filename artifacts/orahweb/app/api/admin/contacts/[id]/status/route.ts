@@ -3,28 +3,30 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { updateSubmissionStatus } from "@/lib/contact-store";
 
+const VALID_STATUSES = ["new", "read", "replied"] as const;
+type SubmissionStatus = (typeof VALID_STATUSES)[number];
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
-  const role = (session?.user as { role?: string })?.role;
 
-  if (!session || role !== "admin") {
+  if (!session || session.user.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const formData = await request.formData();
-  const status = formData.get("status") as string;
+  const statusValue = formData.get("status");
 
-  if (!["new", "read", "replied"].includes(status)) {
+  if (
+    typeof statusValue !== "string" ||
+    !(VALID_STATUSES as readonly string[]).includes(statusValue)
+  ) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
 
-  const updated = updateSubmissionStatus(
-    params.id,
-    status as "new" | "read" | "replied"
-  );
+  const updated = updateSubmissionStatus(params.id, statusValue as SubmissionStatus);
 
   if (!updated) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

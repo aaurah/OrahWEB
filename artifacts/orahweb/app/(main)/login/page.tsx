@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/Button";
-import { Suspense } from "react";
+
+const isDev = process.env.NODE_ENV !== "production";
 
 function LoginForm() {
   const router = useRouter();
@@ -35,11 +36,14 @@ function LoginForm() {
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed";
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 group mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-md">
               <span className="text-white font-bold">O</span>
             </div>
@@ -60,10 +64,11 @@ function LoginForm() {
               <input
                 type="email"
                 required
+                disabled={loading}
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="admin@orahweb.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="you@example.com"
+                className={inputClass}
               />
             </div>
 
@@ -74,10 +79,11 @@ function LoginForm() {
               <input
                 type="password"
                 required
+                disabled={loading}
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className={inputClass}
               />
             </div>
 
@@ -92,23 +98,27 @@ function LoginForm() {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <p className="text-xs text-blue-700 font-semibold mb-2">Demo accounts</p>
-            <div className="space-y-2">
-              <div>
-                <p className="text-xs font-medium text-blue-800">Admin</p>
-                <p className="text-xs text-blue-600">
-                  <code>admin@orahweb.com</code> / <code>password123</code>
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-blue-800">User</p>
-                <p className="text-xs text-blue-600">
-                  <code>jane@orahweb.com</code> / <code>password123</code>
-                </p>
+          {isDev && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <p className="text-xs text-blue-700 font-semibold mb-2">
+                Demo accounts (dev only)
+              </p>
+              <div className="space-y-2">
+                <div>
+                  <p className="text-xs font-medium text-blue-800">Admin</p>
+                  <p className="text-xs text-blue-600">
+                    <code>admin@orahweb.com</code> / <code>password123</code>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-blue-800">User</p>
+                  <p className="text-xs text-blue-600">
+                    <code>jane@orahweb.com</code> / <code>password123</code>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
@@ -122,9 +132,17 @@ function LoginForm() {
   );
 }
 
+function LoginFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
+
 export default function LoginPage() {
   return (
-    <Suspense>
+    <Suspense fallback={<LoginFallback />}>
       <LoginForm />
     </Suspense>
   );
