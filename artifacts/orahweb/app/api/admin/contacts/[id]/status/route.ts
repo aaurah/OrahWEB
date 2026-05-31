@@ -32,6 +32,10 @@ export async function POST(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const referer = request.headers.get("referer") ?? "/admin/contacts";
-  return NextResponse.redirect(referer, { status: 303 });
+  const returnId = formData.get("returnId");
+  const returnStatus = formData.get("returnStatus");
+  const url = new URL("/admin/contacts", request.url);
+  if (typeof returnId === "string" && returnId) url.searchParams.set("id", returnId);
+  if (typeof returnStatus === "string" && returnStatus) url.searchParams.set("status", returnStatus);
+  return NextResponse.redirect(url, { status: 303 });
 }

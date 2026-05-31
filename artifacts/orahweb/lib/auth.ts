@@ -3,6 +3,10 @@ import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
+if (process.env.NODE_ENV === "production" && !process.env.NEXTAUTH_SECRET) {
+  throw new Error("NEXTAUTH_SECRET environment variable must be set in production");
+}
+
 declare module "next-auth" {
   interface User {
     role?: string;
@@ -87,5 +91,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  // Stable dev fallback keeps sessions alive across restarts in development.
+  // In production the env var is required (enforced above).
+  secret: process.env.NEXTAUTH_SECRET ?? "orahweb-dev-secret-change-in-production",
 };

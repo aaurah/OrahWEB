@@ -3,20 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-const NAV_ITEMS = [
-  { href: "/admin", label: "Overview", exact: true },
-  { href: "/admin/contacts", label: "Contacts" },
-  { href: "/admin/users", label: "Users" },
-  { href: "/admin/settings", label: "Settings" },
-];
+import { ADMIN_NAV_ITEMS } from "./nav-items";
 
 export function AdminMobileNav() {
   const pathname = usePathname();
 
   return (
     <nav className="lg:hidden flex items-center gap-1 overflow-x-auto pb-1">
-      {NAV_ITEMS.map((item) => {
+      {ADMIN_NAV_ITEMS.map((item) => {
         const isActive = item.exact
           ? pathname === item.href
           : pathname.startsWith(item.href);

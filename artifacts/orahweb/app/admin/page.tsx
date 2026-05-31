@@ -1,23 +1,10 @@
 import type { Metadata } from "next";
-import { getSubmissions, getSubmissionStats } from "@/lib/contact-store";
+import Link from "next/link";
+import { getSubmissions, getSubmissionStats, STATUS_STYLES } from "@/lib/contact-store";
+import { formatRelativeTime } from "@/lib/utils";
 import { Card } from "@/components/Card";
 
 export const metadata: Metadata = { title: "Overview" };
-
-function formatRelativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
-}
-
-const STATUS_STYLES = {
-  new: "bg-blue-50 text-blue-700 border-blue-200",
-  read: "bg-gray-100 text-gray-600 border-gray-200",
-  replied: "bg-green-50 text-green-700 border-green-200",
-};
 
 export default async function AdminOverviewPage() {
   const stats = getSubmissionStats();
@@ -86,12 +73,12 @@ export default async function AdminOverviewPage() {
         <div className="xl:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-semibold text-gray-900">Recent Contacts</h2>
-            <a
+            <Link
               href="/admin/contacts"
               className="text-sm text-blue-600 hover:text-blue-700 font-medium"
             >
               View all →
-            </a>
+            </Link>
           </div>
           <div className="space-y-3">
             {recentContacts.length === 0 ? (
@@ -103,7 +90,7 @@ export default async function AdminOverviewPage() {
             ) : (
               recentContacts.map((contact) => (
                 <Card key={contact.id} padding="md" hover>
-                  <a href={`/admin/contacts?id=${contact.id}`}>
+                  <Link href={`/admin/contacts?id=${contact.id}`}>
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-1">
@@ -125,7 +112,7 @@ export default async function AdminOverviewPage() {
                         {formatRelativeTime(contact.createdAt)}
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 </Card>
               ))
             )}
@@ -135,7 +122,7 @@ export default async function AdminOverviewPage() {
         <div>
           <h2 className="text-base font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="space-y-3">
-            <a href="/admin/contacts">
+            <Link href="/admin/contacts">
               <Card padding="md" hover>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
@@ -151,8 +138,8 @@ export default async function AdminOverviewPage() {
                   </div>
                 </div>
               </Card>
-            </a>
-            <a href="/admin/users">
+            </Link>
+            <Link href="/admin/users">
               <Card padding="md" hover>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center text-violet-600 shrink-0">
@@ -166,8 +153,8 @@ export default async function AdminOverviewPage() {
                   </div>
                 </div>
               </Card>
-            </a>
-            <a href="/admin/settings">
+            </Link>
+            <Link href="/admin/settings">
               <Card padding="md" hover>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 shrink-0">
@@ -182,8 +169,8 @@ export default async function AdminOverviewPage() {
                   </div>
                 </div>
               </Card>
-            </a>
-            <a href="/" target="_blank" rel="noopener noreferrer">
+            </Link>
+            <Link href="/" target="_blank" rel="noopener noreferrer">
               <Card padding="md" hover>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600 shrink-0">
@@ -197,7 +184,7 @@ export default async function AdminOverviewPage() {
                   </div>
                 </div>
               </Card>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

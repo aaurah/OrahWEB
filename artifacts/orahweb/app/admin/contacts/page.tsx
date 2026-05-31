@@ -1,25 +1,10 @@
 import type { Metadata } from "next";
-import { getSubmissions, getSubmissionStats } from "@/lib/contact-store";
+import Link from "next/link";
+import { getSubmissions, getSubmissionStats, STATUS_STYLES } from "@/lib/contact-store";
+import { formatRelativeTime } from "@/lib/utils";
 import { Card } from "@/components/Card";
 
 export const metadata: Metadata = { title: "Contacts" };
-
-function formatRelativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return "just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-const STATUS_STYLES = {
-  new: "bg-blue-50 text-blue-700 border-blue-200",
-  read: "bg-gray-100 text-gray-600 border-gray-200",
-  replied: "bg-green-50 text-green-700 border-green-200",
-};
 
 export default async function AdminContactsPage({
   searchParams,
@@ -55,7 +40,7 @@ export default async function AdminContactsPage({
 
       <div className="flex gap-2 flex-wrap">
         {(["all", "new", "read", "replied"] as const).map((s) => (
-          <a
+          <Link
             key={s}
             href={s === "all" ? "/admin/contacts" : `/admin/contacts?status=${s}`}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
@@ -68,7 +53,7 @@ export default async function AdminContactsPage({
             {s === "new" ? `New (${stats.new})` : null}
             {s === "read" ? `Read (${stats.read})` : null}
             {s === "replied" ? `Replied (${stats.replied})` : null}
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -82,7 +67,7 @@ export default async function AdminContactsPage({
             </Card>
           ) : (
             filtered.map((contact) => (
-              <a
+              <Link
                 key={contact.id}
                 href={`/admin/contacts?id=${contact.id}${
                   filterStatus ? `&status=${filterStatus}` : ""
@@ -123,7 +108,7 @@ export default async function AdminContactsPage({
                     </div>
                   </div>
                 </Card>
-              </a>
+              </Link>
             ))
           )}
         </div>
@@ -177,6 +162,8 @@ export default async function AdminContactsPage({
                     .map((s) => (
                       <form key={s} action={`/api/admin/contacts/${selected.id}/status`} method="POST">
                         <input type="hidden" name="status" value={s} />
+                        <input type="hidden" name="returnId" value={selected.id} />
+                        <input type="hidden" name="returnStatus" value={filterStatus ?? ""} />
                         <button
                           type="submit"
                           className="px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"

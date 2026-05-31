@@ -8,6 +8,12 @@ export interface ContactSubmission {
   status: "new" | "read" | "replied";
 }
 
+export const STATUS_STYLES: Record<ContactSubmission["status"], string> = {
+  new: "bg-blue-50 text-blue-700 border-blue-200",
+  read: "bg-gray-100 text-gray-600 border-gray-200",
+  replied: "bg-green-50 text-green-700 border-green-200",
+};
+
 const submissions: ContactSubmission[] = [
   {
     id: "seed-1",
@@ -60,7 +66,7 @@ export function addSubmission(
     createdAt: new Date().toISOString(),
     status: "new",
   };
-  submissions.unshift(submission);
+  submissions.push(submission);
   return submission;
 }
 
@@ -85,10 +91,12 @@ export function updateSubmissionStatus(
 }
 
 export function getSubmissionStats() {
-  return {
-    total: submissions.length,
-    new: submissions.filter((s) => s.status === "new").length,
-    read: submissions.filter((s) => s.status === "read").length,
-    replied: submissions.filter((s) => s.status === "replied").length,
-  };
+  return submissions.reduce(
+    (acc, s) => {
+      acc.total++;
+      acc[s.status]++;
+      return acc;
+    },
+    { total: 0, new: 0, read: 0, replied: 0 }
+  );
 }
