@@ -5,6 +5,11 @@ import { Card } from "@/components/Card";
 
 export const metadata: Metadata = { title: "Users" };
 
+const LAST_LOGIN: Record<string, string> = {
+  "1": new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+  "2": new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+};
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     month: "short",
@@ -13,14 +18,17 @@ function formatDate(iso: string): string {
   });
 }
 
-const LAST_LOGIN: Record<string, string> = {
-  "1": new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-  "2": new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
-};
-
 export default async function AdminUsersPage() {
   const session = await getServerSession(authOptions);
   const currentUserId = session?.user.id;
+
+  const users = PUBLIC_USERS.map((u) => ({
+    ...u,
+    banned: false,
+    lastLoginAt: LAST_LOGIN[u.id] ?? null,
+  }));
+
+  const adminCount = users.filter((u) => u.role === "admin").length;
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -28,12 +36,29 @@ export default async function AdminUsersPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Users</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {PUBLIC_USERS.length} registered {PUBLIC_USERS.length === 1 ? "account" : "accounts"}
+            {users.length} registered {users.length === 1 ? "account" : "accounts"}
           </p>
         </div>
-        <div className="px-4 py-2 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-700 font-medium">
-          Demo mode — connect a database to manage users
+        <div className="px-4 py-2 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-700 font-medium flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+          Demo mode
         </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4">
+        <Card padding="md">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Total</p>
+          <p className="text-3xl font-bold text-gray-900">{users.length}</p>
+        </Card>
+        <Card padding="md">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Admins</p>
+          <p className="text-3xl font-bold text-violet-700">{adminCount}</p>
+        </Card>
+        <Card padding="md">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Banned</p>
+          <p className="text-3xl font-bold text-gray-400">0</p>
+        </Card>
       </div>
 
       <Card padding="md">
@@ -56,7 +81,7 @@ export default async function AdminUsersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {PUBLIC_USERS.map((user) => {
+              {users.map((user) => {
                 const isCurrentUser = user.id === currentUserId;
                 return (
                   <tr key={user.id} className={isCurrentUser ? "bg-blue-50/40" : "group"}>
@@ -103,7 +128,7 @@ export default async function AdminUsersPage() {
                     </td>
                     <td className="py-4 hidden md:table-cell">
                       <p className="text-sm text-gray-600">
-                        {LAST_LOGIN[user.id] ? formatDate(LAST_LOGIN[user.id]) : "—"}
+                        {user.lastLoginAt ? formatDate(user.lastLoginAt) : "—"}
                       </p>
                     </td>
                   </tr>
@@ -119,11 +144,13 @@ export default async function AdminUsersPage() {
           Ready to manage real users?
         </h3>
         <p className="text-sm text-blue-700 leading-relaxed">
-          Connect a PostgreSQL database via{" "}
+          A <code className="font-mono text-xs bg-blue-100 px-1 py-0.5 rounded">users</code> table
+          has been defined in the shared database schema. Set{" "}
           <code className="font-mono text-xs bg-blue-100 px-1 py-0.5 rounded">DATABASE_URL</code>{" "}
-          and update{" "}
-          <code className="font-mono text-xs bg-blue-100 px-1 py-0.5 rounded">lib/db/src/schema/index.ts</code>{" "}
-          with a users table to enable full user management.
+          and run{" "}
+          <code className="font-mono text-xs bg-blue-100 px-1 py-0.5 rounded">pnpm --filter @workspace/db run push</code>{" "}
+          to migrate, then add <code className="font-mono text-xs bg-blue-100 px-1 py-0.5 rounded">@workspace/db</code> to
+          orahweb&apos;s dependencies to enable live user management.
         </p>
       </div>
     </div>
