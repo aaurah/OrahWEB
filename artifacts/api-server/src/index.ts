@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { ensureDemoUsers } from "@workspace/db/seed";
 
 const rawPort = process.env["PORT"];
 
@@ -22,4 +23,8 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
+
+  ensureDemoUsers()
+    .then(() => logger.info("Demo users ready"))
+    .catch((e) => logger.warn({ err: e }, "Could not seed demo users"));
 });

@@ -1,47 +1,41 @@
 import { db } from "./index";
 import { usersTable } from "./schema/users";
-import { eq, count } from "drizzle-orm";
-import bcrypt from "bcryptjs";
+import { count } from "drizzle-orm";
 
 const DEMO_USERS = [
   {
     id: "1",
     name: "Admin User",
     email: "admin@orahweb.com",
-    password: "password123",
-    role: "admin",
+    role: "admin" as const,
     verified: true,
+    passwordHash: "demo-only",
   },
   {
     id: "2",
     name: "Jane Doe",
     email: "jane@orahweb.com",
-    password: "password123",
-    role: "user",
+    role: "user" as const,
     verified: true,
+    passwordHash: "demo-only",
   },
 ];
 
 export async function ensureDemoUsers(): Promise<void> {
-  const [{ value: existing }] = await db
-    .select({ value: count() })
-    .from(usersTable);
+  try {
+    const [{ value: existing }] = await db
+      .select({ value: count() })
+      .from(usersTable);
 
-  if (existing > 0) return;
+    if (existing > 0) return;
 
-  for (const u of DEMO_USERS) {
-    const passwordHash = await bcrypt.hash(u.password, 10);
-    await db
-      .insert(usersTable)
-      .values({
-        id: u.id,
-        name: u.name,
-        email: u.email,
-        passwordHash,
-        role: u.role,
-        verified: u.verified,
-        banned: false,
-      })
-      .onConflictDoNothing();
+    for (const u of DEMO_USERS) {
+      await db
+        .insert(usersTable)
+        .values({ ...u, banned: false })
+        .onConflictDoNothing();
+    }
+  } catch {
+    // DB not ready yet — skip seeding silently
   }
 }
