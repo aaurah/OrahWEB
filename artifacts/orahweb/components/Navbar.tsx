@@ -7,6 +7,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/cart";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { OrahWebLogoFull } from "@/components/OrahWebLogo";
 
 const NAV_LINKS = [
   { href: "/domains", label: "Domains" },
@@ -25,13 +26,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 backdrop-blur-md border-b shadow-sm" style={{ background: "var(--nav-bg)", borderColor: "var(--border)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-              <span className="text-white font-bold text-sm">O</span>
-            </div>
-            <span className="font-bold text-xl tracking-tight" style={{ color: "var(--text)" }}>
-              Orah<span className="text-blue-600" style={{ color: "var(--accent)" }}>Web</span>
-            </span>
+          <Link href="/" className="flex items-center group">
+            <OrahWebLogoFull iconSize={34} className="group-hover:opacity-90 transition-opacity" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -42,7 +38,7 @@ export function Navbar() {
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   pathname === href || pathname.startsWith(href + "/")
-                    ? "bg-blue-50 text-blue-700"
+                    ? "bg-green-50 text-green-700"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 )}
               >
@@ -63,7 +59,7 @@ export function Navbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {count > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {count > 9 ? "9+" : count}
                 </span>
               )}
@@ -76,7 +72,7 @@ export function Navbar() {
                   className={cn(
                     "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                     pathname === "/dashboard"
-                      ? "bg-blue-50 text-blue-700"
+                      ? "bg-green-50 text-green-700"
                       : "text-gray-700 hover:bg-gray-100"
                   )}
                 >
@@ -100,7 +96,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
                 >
                   Get Started
                 </Link>
@@ -108,7 +104,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile: theme + hamburger */}
           <div className="md:hidden flex items-center gap-1">
             <ThemeSwitcher />
             <button
@@ -134,7 +129,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen(false)}
                 className={cn(
                   "block px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                  pathname === href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-100"
+                  pathname === href ? "bg-green-50 text-green-700" : "text-gray-600 hover:bg-gray-100"
                 )}
               >
                 {label}
@@ -155,7 +150,7 @@ export function Navbar() {
                   <Link href="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                     Sign in
                   </Link>
-                  <Link href="/domains" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-semibold text-center">
+                  <Link href="/domains" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold text-center">
                     Search Domains
                   </Link>
                 </>

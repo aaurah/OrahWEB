@@ -110,8 +110,8 @@ const FAQS = [
 export default function PricingPage() {
   return (
     <>
-      <div className="bg-gradient-to-br from-blue-950 via-indigo-900 to-violet-900 text-white text-center px-4 py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.4),_transparent_60%)]" />
+      <div className="bg-gradient-to-br from-[#052e16] via-green-900 to-[#064e3b] text-white text-center px-4 py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(22,163,74,0.4),_transparent_60%)]" />
         <div className="relative max-w-3xl mx-auto">
           <h1 className="text-4xl sm:text-5xl font-bold">Simple, honest pricing</h1>
           <p className="mt-5 text-lg text-blue-100 leading-relaxed">
@@ -129,7 +129,7 @@ export default function PricingPage() {
               key={plan.name}
               className={`relative rounded-2xl p-8 flex flex-col ${
                 plan.highlight
-                  ? "bg-gradient-to-b from-blue-600 to-violet-700 text-white shadow-2xl shadow-blue-300 scale-105"
+                  ? "bg-gradient-to-b from-green-600 to-emerald-700 text-white shadow-2xl shadow-green-300 scale-105"
                   : "bg-white border border-gray-100 shadow-sm text-gray-900"
               }`}
             >
@@ -185,8 +185,8 @@ export default function PricingPage() {
                 <Button
                   className={`w-full py-3 rounded-xl font-semibold ${
                     plan.highlight
-                      ? "bg-white text-blue-700 hover:bg-blue-50"
-                      : "bg-gradient-to-r from-blue-600 to-violet-600 text-white"
+                      ? "bg-white text-green-700 hover:bg-green-50"
+                      : "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
                   }`}
                 >
                   {plan.cta}

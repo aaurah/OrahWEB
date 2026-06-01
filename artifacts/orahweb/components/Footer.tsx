@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OrahWebLogoFull } from "@/components/OrahWebLogo";
 
 const FOOTER_LINKS = {
   Domains: [
@@ -34,13 +35,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 group w-fit">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">O</span>
-              </div>
-              <span className="font-bold text-xl text-white">
-                Orah<span className="text-blue-400">Web</span>
-              </span>
+            <Link href="/" className="flex items-center group w-fit">
+              <OrahWebLogoFull iconSize={32} />
             </Link>
             <p className="mt-4 text-sm leading-relaxed max-w-xs">
               The domain platform for the decentralized web. Own your name forever — on blockchain and beyond.

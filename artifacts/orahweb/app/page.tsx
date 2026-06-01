@@ -8,14 +8,14 @@ import { Section, SectionHeader } from "@/components/Layout";
 import { useCart } from "@/lib/cart";
 
 const POPULAR_TLDS = [
-  { ext: ".web3", price: 9.99, hot: true, color: "from-violet-500 to-purple-600" },
-  { ext: ".crypto", price: 19.99, hot: true, color: "from-blue-500 to-cyan-500" },
+  { ext: ".web3", price: 9.99, hot: true, color: "from-green-500 to-emerald-600" },
+  { ext: ".crypto", price: 19.99, hot: true, color: "from-amber-500 to-yellow-500" },
   { ext: ".nft", price: 14.99, hot: false, color: "from-pink-500 to-rose-500" },
   { ext: ".wallet", price: 12.99, hot: false, color: "from-emerald-500 to-teal-500" },
   { ext: ".dao", price: 24.99, hot: true, color: "from-orange-500 to-amber-500" },
   { ext: ".com", price: 4.99, hot: false, color: "from-gray-600 to-gray-700" },
-  { ext: ".io", price: 7.99, hot: false, color: "from-indigo-500 to-blue-600" },
-  { ext: ".app", price: 6.99, hot: false, color: "from-sky-500 to-blue-500" },
+  { ext: ".io", price: 7.99, hot: false, color: "from-green-600 to-teal-600" },
+  { ext: ".app", price: 6.99, hot: false, color: "from-lime-500 to-green-500" },
 ];
 
 const FEATURES = [
@@ -204,14 +204,14 @@ function DomainSearch() {
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-indigo-900 to-violet-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.5),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(37,99,235,0.4),_transparent_60%)]" />
-        <div className="absolute top-20 right-10 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#052e16] via-green-900 to-[#064e3b] text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(22,163,74,0.5),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(5,150,105,0.4),_transparent_60%)]" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-36 text-center">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-widest uppercase text-blue-200 mb-8">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-widest uppercase text-green-200 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             Web3 Domains Now Available
           </span>
@@ -219,12 +219,12 @@ export default function HomePage() {
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
             Your name.
             <br />
-            <span className="bg-gradient-to-r from-blue-300 via-violet-300 to-pink-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent">
               Your domain. Forever.
             </span>
           </h1>
 
-          <p className="mt-6 text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-xl text-green-100 max-w-2xl mx-auto leading-relaxed">
             Register blockchain and traditional domains. Own your identity on the
             decentralized web — no renewals, no censorship, no middlemen.
           </p>
@@ -233,7 +233,7 @@ export default function HomePage() {
             <DomainSearch />
           </div>
 
-          <p className="mt-5 text-sm text-blue-300">
+          <p className="mt-5 text-sm text-green-300">
             Popular:{" "}
             {[".crypto", ".web3", ".nft", ".wallet", ".dao"].map((ext) => (
               <button
@@ -252,7 +252,7 @@ export default function HomePage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
           {STATS.map(({ value, label }) => (
             <div key={label} className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+              <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent">
                 {value}
               </div>
               <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
@@ -272,7 +272,7 @@ export default function HomePage() {
           {POPULAR_TLDS.map(({ ext, price, hot, color }) => (
             <div
               key={ext}
-              className="group relative bg-white rounded-2xl border border-gray-100 p-5 text-center shadow-sm hover:-translate-y-1 hover:shadow-xl hover:border-blue-100 transition-all duration-300 cursor-pointer"
+              className="group relative bg-white rounded-2xl border border-gray-100 p-5 text-center shadow-sm hover:-translate-y-1 hover:shadow-xl hover:border-green-100 transition-all duration-300 cursor-pointer"
             >
               {hot && (
                 <span className="absolute -top-2 -right-2 text-[10px] font-bold bg-gradient-to-r from-orange-400 to-rose-500 text-white px-2 py-0.5 rounded-full uppercase tracking-wide">
@@ -310,7 +310,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
             <Card key={f.title} hover className="flex flex-col gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-violet-50 border border-blue-100 flex items-center justify-center text-blue-600">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 flex items-center justify-center text-green-600">
                 {f.icon}
               </div>
               <div>
@@ -323,19 +323,19 @@ export default function HomePage() {
       </Section>
 
       <Section className="bg-white">
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-green-200 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.1),_transparent_60%)]" />
           <div className="relative">
             <h2 className="text-3xl sm:text-4xl font-bold">
               Claim your name before someone else does.
             </h2>
-            <p className="mt-4 text-blue-100 text-lg max-w-xl mx-auto">
+            <p className="mt-4 text-green-100 text-lg max-w-xl mx-auto">
               Over 50,000 domains are registered every day. Yours might not be
               available tomorrow.
             </p>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <Link href="/domains">
-                <Button className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg px-8 py-3.5 text-base font-semibold rounded-xl">
+                <Button className="bg-white text-green-700 hover:bg-green-50 shadow-lg px-8 py-3.5 text-base font-semibold rounded-xl">
                   Search Domains
                 </Button>
               </Link>
