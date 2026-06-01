@@ -82,6 +82,17 @@ const STATS = [
   { value: "$0", label: "Annual renewal for Web3 domains" },
 ];
 
+const HOME_TLDS = [
+  { ext: ".crypto", price: 19.99, type: "web3" },
+  { ext: ".web3", price: 9.99, type: "web3" },
+  { ext: ".nft", price: 14.99, type: "web3" },
+  { ext: ".wallet", price: 12.99, type: "web3" },
+  { ext: ".dao", price: 24.99, type: "web3" },
+  { ext: ".com", price: 4.99, type: "traditional" },
+  { ext: ".io", price: 7.99, type: "traditional" },
+  { ext: ".app", price: 6.99, type: "traditional" },
+];
+
 function DomainSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ domain: string; available: boolean; price: number }[] | null>(null);
@@ -89,24 +100,36 @@ function DomainSearch() {
   const { addItem, items } = useCart();
   const inCart = (domain: string) => items.some((i) => i.id === domain);
 
-  const search = (e: React.FormEvent) => {
+  const search = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
     setLoading(true);
-    setTimeout(() => {
-      const name = query.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/\.[^.]+$/, "");
-      setResults([
-        { domain: `${name}.crypto`, available: true, price: 19.99 },
-        { domain: `${name}.web3`, available: true, price: 9.99 },
-        { domain: `${name}.nft`, available: Math.random() > 0.4, price: 14.99 },
-        { domain: `${name}.wallet`, available: true, price: 12.99 },
-        { domain: `${name}.dao`, available: Math.random() > 0.5, price: 24.99 },
-        { domain: `${name}.com`, available: Math.random() > 0.6, price: 4.99 },
-        { domain: `${name}.io`, available: Math.random() > 0.3, price: 7.99 },
-        { domain: `${name}.app`, available: Math.random() > 0.5, price: 6.99 },
-      ]);
-      setLoading(false);
-    }, 900);
+    const name = query.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/\.[^.]+$/, "");
+    if (!name) { setLoading(false); return; }
+
+    const candidates = HOME_TLDS.map((t) => `${name}${t.ext}`);
+    let registered = new Set<string>();
+    try {
+      const res = await fetch("/api/domains/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domains: candidates }),
+      });
+      const data = await res.json();
+      registered = new Set<string>(data.registered ?? []);
+    } catch { /* fail open */ }
+
+    const takenChance = name.length <= 3 ? 0.95 : name.length <= 5 ? 0.80 : name.length <= 7 ? 0.60 : 0.35;
+
+    setResults(
+      HOME_TLDS.map((t) => {
+        const domain = `${name}${t.ext}`;
+        if (registered.has(domain)) return { domain, available: false, price: t.price };
+        if (t.type === "web3") return { domain, available: true, price: t.price };
+        return { domain, available: Math.random() > takenChance, price: t.price };
+      })
+    );
+    setLoading(false);
   };
 
   return (
