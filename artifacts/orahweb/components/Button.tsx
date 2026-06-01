@@ -11,14 +11,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const BRAND_GRADIENT: CSSProperties = {
-  background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)",
-  color: "#14532d",
+  background: "linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #67e8f9 100%)",
+  color: "#3b0764",
 };
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:  "hover:opacity-90 shadow-md",
   secondary:"bg-gray-900 text-white hover:bg-gray-700",
-  outline:  "border-2 border-gray-200 text-gray-700 hover:border-green-400 hover:text-green-700 bg-white",
+  outline:  "border-2 border-gray-200 text-gray-700 hover:border-violet-400 hover:text-violet-700 bg-white",
   ghost:    "text-gray-700 hover:bg-gray-100",
 };
 
@@ -53,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ...style,
         }}
         className={cn(
-          "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed",
           variantStyles[variant],
           sizeStyles[size],
           className

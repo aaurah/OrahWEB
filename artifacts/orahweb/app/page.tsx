@@ -206,27 +206,27 @@ function DomainSearch() {
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#052e16] via-green-900 to-[#064e3b] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(22,163,74,0.5),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(5,150,105,0.4),_transparent_60%)]" />
-        <div className="absolute top-20 right-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f0c2e] via-[#231a6e] to-[#0a3a50] text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(139,92,246,0.55),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(56,189,248,0.35),_transparent_60%)]" />
+        <div className="absolute top-20 right-10 w-72 h-72 bg-violet-500/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-20 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-36 text-center">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-widest uppercase text-green-200 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-widest uppercase text-violet-200 mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
             Web3 Domains Now Available
           </span>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
             Your name.
             <br />
-            <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-200 via-pink-100 to-cyan-200 bg-clip-text text-transparent">
               Your domain. Forever.
             </span>
           </h1>
 
-          <p className="mt-6 text-xl text-green-100 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-xl text-violet-100 max-w-2xl mx-auto leading-relaxed">
             Register blockchain and traditional domains. Own your identity on the
             decentralized web — no renewals, no censorship, no middlemen.
           </p>
@@ -235,7 +235,7 @@ export default function HomePage() {
             <DomainSearch />
           </div>
 
-          <p className="mt-5 text-sm text-green-300">
+          <p className="mt-5 text-sm text-violet-300">
             Popular:{" "}
             {[".crypto", ".web3", ".nft", ".wallet", ".dao"].map((ext) => (
               <button
@@ -247,7 +247,7 @@ export default function HomePage() {
             ))}
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#edfaf3] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f5f3ff] to-transparent" />
       </section>
 
       <Section className="pt-10 pb-10">
@@ -255,7 +255,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
             {STATS.map(({ value, label }) => (
               <div key={label} className="text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent">
+                <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
                   {value}
                 </div>
                 <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
@@ -314,7 +314,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
             <Card key={f.title} hover className="flex flex-col gap-4">
-              <div className="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-green-600">
+              <div className="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-violet-600">
                 {f.icon}
               </div>
               <div>
@@ -327,13 +327,13 @@ export default function HomePage() {
       </Section>
 
       <Section>
-        <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-green-200 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-violet-200 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.1),_transparent_60%)]" />
           <div className="relative">
             <h2 className="text-3xl sm:text-4xl font-bold">
               Claim your name before someone else does.
             </h2>
-            <p className="mt-4 text-green-100 text-lg max-w-xl mx-auto">
+            <p className="mt-4 text-violet-100 text-lg max-w-xl mx-auto">
               Over 50,000 domains are registered every day. Yours might not be
               available tomorrow.
             </p>

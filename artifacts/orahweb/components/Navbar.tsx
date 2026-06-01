@@ -59,7 +59,7 @@ export function Navbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z" />
               </svg>
               {count > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-violet-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {count > 9 ? "9+" : count}
                 </span>
               )}
@@ -72,7 +72,7 @@ export function Navbar() {
                   className={cn(
                     "px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap",
                     pathname === "/dashboard"
-                      ? "bg-green-50 text-green-700"
+                      ? "bg-violet-50 text-violet-700"
                       : "text-gray-700 hover:bg-gray-100"
                   )}
                 >
@@ -97,7 +97,7 @@ export function Navbar() {
                 <Link
                   href="/signup"
                   className="px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
-                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}
+                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #67e8f9 100%)", color: "#3b0764" }}
                 >
                   Get Started
                 </Link>

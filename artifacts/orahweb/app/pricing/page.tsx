@@ -110,11 +110,12 @@ const FAQS = [
 export default function PricingPage() {
   return (
     <>
-      <div className="bg-gradient-to-br from-[#052e16] via-green-900 to-[#064e3b] text-white text-center px-4 py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(22,163,74,0.4),_transparent_60%)]" />
+      <div className="bg-gradient-to-br from-[#0f0c2e] via-[#231a6e] to-[#0a3a50] text-white text-center px-4 py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(139,92,246,0.5),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(56,189,248,0.3),_transparent_60%)]" />
         <div className="relative max-w-3xl mx-auto">
           <h1 className="text-4xl sm:text-5xl font-bold">Simple, honest pricing</h1>
-          <p className="mt-5 text-lg text-blue-100 leading-relaxed">
+          <p className="mt-5 text-lg text-violet-100 leading-relaxed">
             Web3 domains are a one-time purchase — no renewals, no surprises.
             Traditional domains renew annually at the same rate you register.
           </p>
@@ -129,7 +130,7 @@ export default function PricingPage() {
               key={plan.name}
               className={`relative rounded-2xl p-8 flex flex-col ${
                 plan.highlight
-                  ? "bg-gradient-to-b from-green-600 to-emerald-700 text-white shadow-2xl shadow-green-300 scale-105"
+                  ? "bg-gradient-to-b from-violet-600 to-indigo-700 text-white shadow-2xl shadow-violet-300 scale-105"
                   : "bg-white border border-gray-100 shadow-sm text-gray-900"
               }`}
             >
