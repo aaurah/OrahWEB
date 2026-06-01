@@ -70,7 +70,7 @@ export function Navbar() {
                 <Link
                   href="/dashboard"
                   className={cn(
-                    "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap",
                     pathname === "/dashboard"
                       ? "bg-green-50 text-green-700"
                       : "text-gray-700 hover:bg-gray-100"
@@ -80,7 +80,7 @@ export function Navbar() {
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="px-4 py-2 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
+                  className="px-3 py-2 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity whitespace-nowrap"
                   style={{ background: "var(--surface-3)", color: "var(--text)" }}
                 >
                   Sign out
