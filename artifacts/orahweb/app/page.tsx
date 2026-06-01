@@ -150,7 +150,8 @@ function DomainSearch() {
         <Button
           type="submit"
           size="lg"
-          className="px-8 py-4 bg-white text-blue-700 hover:bg-blue-50 font-semibold rounded-2xl shadow-lg text-base"
+          className="px-8 py-4 font-semibold rounded-2xl shadow-lg text-base"
+          style={{ background: "#ffffff", color: "#15803d" }}
           loading={loading}
         >
           Search
