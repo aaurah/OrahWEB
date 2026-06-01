@@ -149,6 +149,31 @@ router.get('/stripe/session/:sessionId', async (req, res) => {
   }
 });
 
+router.post('/domains/check', async (req, res) => {
+  try {
+    const { domains } = req.body as { domains: string[] };
+    if (!Array.isArray(domains) || domains.length === 0) {
+      return res.json({ registered: [] });
+    }
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS orahweb_domains (
+        id SERIAL PRIMARY KEY, user_id INTEGER, session_id TEXT UNIQUE,
+        domain_name TEXT NOT NULL, tld TEXT NOT NULL, type TEXT NOT NULL DEFAULT 'traditional',
+        status TEXT NOT NULL DEFAULT 'active', customer_email TEXT,
+        purchased_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), expires_at TIMESTAMPTZ
+      )
+    `);
+    const result = await pool.query(
+      `SELECT domain_name FROM orahweb_domains WHERE domain_name = ANY($1) AND status = 'active'`,
+      [domains]
+    );
+    return res.json({ registered: result.rows.map((r: { domain_name: string }) => r.domain_name) });
+  } catch (err: any) {
+    console.error('Domain check error:', err);
+    return res.json({ registered: [] });
+  }
+});
+
 router.post('/stripe/checkout/complete', async (req, res) => {
   try {
     const { sessionId, userId } = req.body as { sessionId?: string; userId?: number | null };
