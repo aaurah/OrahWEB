@@ -40,7 +40,7 @@ export default function TransferPage() {
   const [transfers, setTransfers] = useState<Transfer[]>([]);
 
   useEffect(() => {
-    if (session?.user?.id) {
+    if ((session?.user as { id?: string })?.id) {
       fetch("/api/user/domains")
         .then((r) => r.json())
         .then((d) => setMyDomains((d.domains ?? []).filter((x: any) => x.type === "traditional")));

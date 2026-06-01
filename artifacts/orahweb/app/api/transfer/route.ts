@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/lib/auth";
 import { createTransfer, getUserTransfers } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "domainName and authCode required" }, { status: 400 });
   }
 
-  const userId = session?.user?.id ? Number(session.user.id) : null;
+  const userId = parseInt((session?.user as { id?: string })?.id ?? "0") || null;
   const customerEmail = email || session?.user?.email || null;
 
   const transfer = await createTransfer(userId, domainName, direction || "in", authCode, customerEmail);
@@ -21,8 +21,9 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = parseInt((session?.user as { id?: string })?.id ?? "0") || null;
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const transfers = await getUserTransfers(Number(session.user.id));
+  const transfers = await getUserTransfers(userId);
   return NextResponse.json({ transfers });
 }
