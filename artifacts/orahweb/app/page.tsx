@@ -144,13 +144,13 @@ function DomainSearch() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search your perfect domain..."
-            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 backdrop-blur border border-white/20 text-white placeholder-blue-200 text-lg focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/15 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/12 backdrop-blur-md border border-white/25 text-white placeholder-white/50 text-base focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/18 transition-all"
           />
         </div>
         <Button
           type="submit"
-          size="lg"
-          className="px-8 py-4 font-semibold rounded-2xl shadow-lg text-base"
+          size="md"
+          className="px-7 py-3 font-semibold rounded-xl shadow-lg text-sm whitespace-nowrap"
           style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}
           loading={loading}
         >
@@ -159,22 +159,22 @@ function DomainSearch() {
       </form>
 
       {results && (
-        <div className="mt-4 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+        <div className="mt-3 glass-dark rounded-2xl overflow-hidden">
           {results.map(({ domain, available, price }) => (
             <div
               key={domain}
-              className="flex items-center justify-between px-5 py-3.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between px-5 py-3 border-b border-white/10 last:border-0 hover:bg-white/10 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full ${available ? "bg-emerald-400" : "bg-gray-300"}`} />
-                <span className="font-semibold text-gray-900">{domain}</span>
-                {!available && <span className="text-xs text-gray-400 font-medium">Taken</span>}
+                <div className={`w-2 h-2 rounded-full ${available ? "bg-emerald-400" : "bg-white/30"}`} />
+                <span className="font-semibold text-white">{domain}</span>
+                {!available && <span className="text-xs text-white/40 font-medium">Taken</span>}
               </div>
               {available ? (
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-gray-800">${price}</span>
+                  <span className="text-sm font-bold text-white">${price}</span>
                   {inCart(domain) ? (
-                    <span className="px-4 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1">
+                    <span className="px-3 py-1 rounded-lg bg-emerald-400/20 text-emerald-300 text-xs font-semibold flex items-center gap-1 border border-emerald-400/30">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
@@ -183,7 +183,8 @@ function DomainSearch() {
                   ) : (
                     <button
                       onClick={() => addItem({ id: domain, domain, price })}
-                      className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+                      className="px-3 py-1 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity"
+                      style={{ background: "linear-gradient(135deg,#fff 0%,#4ade80 55%,#facc15 100%)", color: "#14532d" }}
                     >
                       Add
                     </button>
@@ -246,23 +247,25 @@ export default function HomePage() {
             ))}
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-50 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#edfaf3] to-transparent" />
       </section>
 
-      <Section className="bg-gray-50 pt-10 pb-10">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-          {STATS.map(({ value, label }) => (
-            <div key={label} className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent">
-                {value}
+      <Section className="pt-10 pb-10">
+        <div className="glass-panel rounded-3xl px-8 py-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {STATS.map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-4xl font-bold bg-gradient-to-r from-green-600 to-amber-500 bg-clip-text text-transparent">
+                  {value}
+                </div>
+                <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
               </div>
-              <div className="mt-1 text-sm text-gray-500 font-medium">{label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </Section>
 
-      <Section className="bg-white">
+      <Section>
         <SectionHeader
           eyebrow="Browse Extensions"
           title="Find your perfect ending"
@@ -273,7 +276,7 @@ export default function HomePage() {
           {POPULAR_TLDS.map(({ ext, price, hot, color }) => (
             <div
               key={ext}
-              className="group relative bg-white rounded-2xl border border-gray-100 p-5 text-center shadow-sm hover:-translate-y-1 hover:shadow-xl hover:border-green-100 transition-all duration-300 cursor-pointer"
+              className="group relative glass-card rounded-2xl p-5 text-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden"
             >
               {hot && (
                 <span className="absolute -top-2 -right-2 text-[10px] font-bold bg-gradient-to-r from-orange-400 to-rose-500 text-white px-2 py-0.5 rounded-full uppercase tracking-wide">
@@ -311,7 +314,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f) => (
             <Card key={f.title} hover className="flex flex-col gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 flex items-center justify-center text-green-600">
+              <div className="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-green-600">
                 {f.icon}
               </div>
               <div>
@@ -323,7 +326,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section className="bg-white">
+      <Section>
         <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 rounded-3xl p-12 sm:p-16 text-center text-white shadow-2xl shadow-green-200 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.1),_transparent_60%)]" />
           <div className="relative">

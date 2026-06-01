@@ -7,23 +7,14 @@ interface CardProps {
   padding?: "sm" | "md" | "lg";
 }
 
-export function Card({
-  className,
-  children,
-  hover = false,
-  padding = "md",
-}: CardProps) {
-  const paddingStyles = {
-    sm: "p-4",
-    md: "p-6",
-    lg: "p-8",
-  };
+export function Card({ className, children, hover = false, padding = "md" }: CardProps) {
+  const paddingStyles = { sm: "p-4", md: "p-6", lg: "p-8" };
 
   return (
     <div
       className={cn(
-        "bg-white rounded-2xl border border-gray-100 shadow-sm",
-        hover && "transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-100",
+        "glass-card rounded-2xl relative overflow-hidden",
+        hover && "transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl",
         paddingStyles[padding],
         className
       )}
@@ -44,7 +35,7 @@ export function CardHeader({ title, description, icon, className }: CardHeaderPr
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       {icon && (
-        <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+        <div className="w-12 h-12 rounded-xl bg-white/60 backdrop-blur border border-white/70 flex items-center justify-center text-green-600 shadow-sm">
           {icon}
         </div>
       )}
