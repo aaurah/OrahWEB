@@ -23,6 +23,8 @@
   --hover:       #f3f4f6;
   --hover-2:     #f9fafb;
   --accent:      #16a34a;
+  --logo-ring:   #141414;
+  --logo-mid:    #f2f2f2;
 }
 
 /* ─── GLOBAL BRAND COLOR SWAP: Blue/Violet → Green/Amber ───── */
@@ -102,6 +104,8 @@
   --hover:       #334155;
   --hover-2:     #1e293b;
   --accent:      #60a5fa;
+  --logo-ring:   #f0f0f0;
+  --logo-mid:    #1e293b;
 }
 
 [data-theme="amoled"] {
@@ -121,6 +125,8 @@
   --hover:       #1a1a1a;
   --hover-2:     #111111;
   --accent:      #818cf8;
+  --logo-ring:   #ffffff;
+  --logo-mid:    #000000;
 }
 
 [data-theme="yellow-night"] {
@@ -140,6 +146,8 @@
   --hover:       #2d2400;
   --hover-2:     #221b00;
   --accent:      #f59e0b;
+  --logo-ring:   #1a1400;
+  --logo-mid:    #fef3c7;
 }
 
 /* ─── BASE ──────────────────────────────────────────────────── */

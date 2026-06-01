@@ -51,12 +51,12 @@ export function OrahWebLogoIcon({ size = 48, isOnline = true }: LogoIconProps) {
           </radialGradient>
         </defs>
 
-        {/* Outer black ring */}
-        <circle cx="50" cy="50" r="49" fill="#141414" />
-        {/* White ring */}
-        <circle cx="50" cy="50" r="38" fill="#f2f2f2" />
-        {/* Inner dark ring */}
-        <circle cx="50" cy="50" r="28" fill="#141414" />
+        {/* Outer ring — black in light theme, white in dark themes */}
+        <circle cx="50" cy="50" r="49" fill="var(--logo-ring)" />
+        {/* Middle ring — white in light, dark in dark themes */}
+        <circle cx="50" cy="50" r="38" fill="var(--logo-mid)" />
+        {/* Inner ring — matches outer */}
+        <circle cx="50" cy="50" r="28" fill="var(--logo-ring)" />
         {/* Ambient halo on inner ring */}
         <circle cx="50" cy="50" r="28" fill={`url(#${uid}h)`} />
         {/* Main glow sphere */}
