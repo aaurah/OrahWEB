@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import type { Session } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getDomainByName, getDnsRecords, addDnsRecord, deleteDnsRecord } from "@/lib/db";
 
-async function getUserId(session: Awaited<ReturnType<typeof getServerSession>>) {
+async function getUserId(session: Session | null) {
   return parseInt((session?.user as { id?: string })?.id ?? "0") || null;
 }
 
