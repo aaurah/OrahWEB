@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/cart";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const NAV_LINKS = [
   { href: "/domains", label: "Domains" },
@@ -21,15 +22,15 @@ export function Navbar() {
   const { count, setIsOpen } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b shadow-sm" style={{ background: "var(--nav-bg)", borderColor: "var(--border)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
               <span className="text-white font-bold text-sm">O</span>
             </div>
-            <span className="font-bold text-xl tracking-tight text-gray-900">
-              Orah<span className="text-blue-600">Web</span>
+            <span className="font-bold text-xl tracking-tight" style={{ color: "var(--text)" }}>
+              Orah<span className="text-blue-600" style={{ color: "var(--accent)" }}>Web</span>
             </span>
           </Link>
 
@@ -50,10 +51,12 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeSwitcher />
+
             <button
               onClick={() => setIsOpen(true)}
-              className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+              className="relative p-2 rounded-lg theme-btn transition-colors"
               aria-label="Cart"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,10 +64,11 @@ export function Navbar() {
               </svg>
               {count > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                  {count > 9 ? '9+' : count}
+                  {count > 9 ? "9+" : count}
                 </span>
               )}
             </button>
+
             {session ? (
               <>
                 <Link
@@ -80,7 +84,8 @@ export function Navbar() {
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors"
+                  className="px-4 py-2 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
+                  style={{ background: "var(--surface-3)", color: "var(--text)" }}
                 >
                   Sign out
                 </button>
@@ -103,21 +108,25 @@ export function Navbar() {
             )}
           </div>
 
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-5 h-4 flex flex-col justify-between">
-              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "rotate-45 translate-y-1.5")} />
-              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "opacity-0")} />
-              <span className={cn("block h-0.5 bg-gray-900 rounded transition-all", menuOpen && "-rotate-45 -translate-y-1.5")} />
-            </div>
-          </button>
+          {/* Mobile: theme + hamburger */}
+          <div className="md:hidden flex items-center gap-1">
+            <ThemeSwitcher />
+            <button
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors theme-btn"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              <div className="w-5 h-4 flex flex-col justify-between">
+                <span className={cn("block h-0.5 rounded transition-all", menuOpen && "rotate-45 translate-y-1.5")} style={{ background: "var(--text)" }} />
+                <span className={cn("block h-0.5 rounded transition-all", menuOpen && "opacity-0")} style={{ background: "var(--text)" }} />
+                <span className={cn("block h-0.5 rounded transition-all", menuOpen && "-rotate-45 -translate-y-1.5")} style={{ background: "var(--text)" }} />
+              </div>
+            </button>
+          </div>
         </div>
 
         {menuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100 space-y-1">
+          <div className="md:hidden py-4 border-t space-y-1" style={{ borderColor: "var(--border-2)" }}>
             {NAV_LINKS.map(({ href, label }) => (
               <Link
                 key={href}
@@ -137,7 +146,7 @@ export function Navbar() {
                   <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                     My Domains
                   </Link>
-                  <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium">
+                  <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full px-4 py-2 rounded-lg text-sm font-medium text-left" style={{ background: "var(--surface-3)", color: "var(--text)" }}>
                     Sign out
                   </button>
                 </>
