@@ -945,6 +945,9 @@ h1, h2, h3, h4, h5, h6{
 .flex-1{
   flex: 1 1 0%;
 }
+.flex-shrink-0{
+  flex-shrink: 0;
+}
 .shrink-0{
   flex-shrink: 0;
 }
@@ -1013,6 +1016,16 @@ h1, h2, h3, h4, h5, h6{
 }
 .animate-spin{
   animation: spin 1s linear infinite;
+}
+@keyframes ping{
+
+  75%, 100%{
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+.animate-ping{
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 .cursor-pointer{
   cursor: pointer;
@@ -2230,6 +2243,9 @@ h1, h2, h3, h4, h5, h6{
 }
 .opacity-75{
   opacity: 0.75;
+}
+.opacity-20{
+  opacity: 0.2;
 }
 .shadow{
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
