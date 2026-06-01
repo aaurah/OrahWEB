@@ -151,7 +151,7 @@ function DomainSearch() {
           type="submit"
           size="lg"
           className="px-8 py-4 font-semibold rounded-2xl shadow-lg text-base"
-          style={{ background: "#ffffff", color: "#15803d" }}
+          style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}
           loading={loading}
         >
           Search
