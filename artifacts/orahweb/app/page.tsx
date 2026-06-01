@@ -144,7 +144,7 @@ function DomainSearch() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search your perfect domain..."
-            className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/12 backdrop-blur-md border border-white/25 text-white placeholder-white/50 text-base focus:outline-none focus:ring-2 focus:ring-white/40 focus:bg-white/18 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-xl bg-white border border-white/30 text-gray-900 placeholder-gray-400 text-base focus:outline-none focus:ring-2 focus:ring-violet-400 transition-all"
           />
         </div>
         <Button
