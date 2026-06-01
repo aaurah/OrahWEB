@@ -128,7 +128,7 @@ export default function DomainsPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="px-6 py-4 rounded-xl bg-white text-blue-900 font-bold text-base hover:bg-blue-50 transition-colors shadow-lg disabled:opacity-70 whitespace-nowrap"
+              className="px-6 py-4 rounded-xl font-bold text-base shadow-lg disabled:opacity-70 whitespace-nowrap"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -231,7 +231,8 @@ export default function DomainsPage() {
                         ) : (
                           <button
                             onClick={() => addItem({ id: domain, domain, price })}
-                            className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-xs font-semibold hover:opacity-90 transition-opacity"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold hover:opacity-90 transition-opacity"
+                            style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}
                           >
                             Add to cart
                           </button>

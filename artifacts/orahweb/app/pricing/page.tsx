@@ -185,8 +185,8 @@ export default function PricingPage() {
                 <Button
                   className={`w-full py-3 rounded-xl font-semibold ${
                     plan.highlight
-                      ? "bg-white text-green-700 hover:bg-green-50"
-                      : "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
+                      ? ""
+                      : ""
                   }`}
                 >
                   {plan.cta}

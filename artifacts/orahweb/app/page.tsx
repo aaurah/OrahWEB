@@ -336,7 +336,7 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
               <Link href="/domains">
-                <Button className="bg-white text-green-700 hover:bg-green-50 shadow-lg px-8 py-3.5 text-base font-semibold rounded-xl">
+                <Button className="shadow-lg px-8 py-3.5 text-base font-semibold rounded-xl">
                   Search Domains
                 </Button>
               </Link>

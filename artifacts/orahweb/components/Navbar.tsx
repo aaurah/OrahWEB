@@ -96,7 +96,8 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
+                  className="px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
+                  style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}
                 >
                   Get Started
                 </Link>
@@ -150,7 +151,7 @@ export function Navbar() {
                   <Link href="/login" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                     Sign in
                   </Link>
-                  <Link href="/domains" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white text-sm font-semibold text-center">
+                  <Link href="/domains" onClick={() => setMenuOpen(false)} className="block px-4 py-2 rounded-xl text-sm font-semibold text-center hover:opacity-90" style={{ background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)", color: "#14532d" }}>
                     Search Domains
                   </Link>
                 </>

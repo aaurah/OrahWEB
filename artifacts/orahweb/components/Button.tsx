@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { ButtonHTMLAttributes, CSSProperties, forwardRef } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 type ButtonSize = "sm" | "md" | "lg";
@@ -8,18 +8,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
-  href?: string;
 }
 
+const BRAND_GRADIENT: CSSProperties = {
+  background: "linear-gradient(135deg, #ffffff 0%, #4ade80 50%, #facc15 100%)",
+  color: "#14532d",
+};
+
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:
-    "bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:opacity-90 shadow-md shadow-blue-200",
-  secondary:
-    "bg-gray-900 text-white hover:bg-gray-700",
-  outline:
-    "border-2 border-gray-200 text-gray-700 hover:border-blue-300 hover:text-blue-700 bg-white",
-  ghost:
-    "text-gray-700 hover:bg-gray-100",
+  primary:  "hover:opacity-90 shadow-md",
+  secondary:"bg-gray-900 text-white hover:bg-gray-700",
+  outline:  "border-2 border-gray-200 text-gray-700 hover:border-green-400 hover:text-green-700 bg-white",
+  ghost:    "text-gray-700 hover:bg-gray-100",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -35,18 +35,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       loading = false,
       className,
+      style,
       children,
       disabled,
       ...props
     },
     ref
   ) => {
+    const isPrimary = variant === "primary";
+
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
+        style={{
+          ...(isPrimary ? BRAND_GRADIENT : {}),
+          ...style,
+        }}
         className={cn(
-          "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed",
           variantStyles[variant],
           sizeStyles[size],
           className
