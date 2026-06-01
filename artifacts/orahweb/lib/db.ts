@@ -210,4 +210,165 @@ export async function deleteDnsRecord(recordId: number, domainId: number) {
   );
 }
 
+// ─── Auth Code / EPP ─────────────────────────────────────────────────────────
+
+export async function ensureAuthCodeColumn() {
+  await pool.query(`
+    ALTER TABLE orahweb_domains
+    ADD COLUMN IF NOT EXISTS auth_code TEXT;
+  `).catch(() => {});
+}
+
+export async function getOrCreateAuthCode(domainId: number): Promise<string> {
+  await ensureAuthCodeColumn();
+  const existing = await pool.query(
+    `SELECT auth_code FROM orahweb_domains WHERE id = $1`,
+    [domainId]
+  );
+  if (existing.rows[0]?.auth_code) return existing.rows[0].auth_code;
+  const code = Array.from({ length: 16 }, () =>
+    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"[
+      Math.floor(Math.random() * 56)
+    ]
+  ).join("");
+  await pool.query(
+    `UPDATE orahweb_domains SET auth_code = $1 WHERE id = $2`,
+    [code, domainId]
+  );
+  return code;
+}
+
+export async function regenerateAuthCode(domainId: number): Promise<string> {
+  await ensureAuthCodeColumn();
+  const code = Array.from({ length: 16 }, () =>
+    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"[
+      Math.floor(Math.random() * 56)
+    ]
+  ).join("");
+  await pool.query(
+    `UPDATE orahweb_domains SET auth_code = $1 WHERE id = $2`,
+    [code, domainId]
+  );
+  return code;
+}
+
+// ─── Blockchain Crypto Records ────────────────────────────────────────────────
+
+export async function initBlockchainTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS orahweb_crypto_records (
+      id          SERIAL PRIMARY KEY,
+      domain_id   INTEGER NOT NULL REFERENCES orahweb_domains(id) ON DELETE CASCADE,
+      coin        TEXT NOT NULL,
+      network     TEXT NOT NULL DEFAULT 'mainnet',
+      address     TEXT NOT NULL,
+      created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+}
+
+export async function getCryptoRecords(domainId: number) {
+  await initBlockchainTable();
+  const result = await pool.query(
+    `SELECT * FROM orahweb_crypto_records WHERE domain_id = $1 ORDER BY coin`,
+    [domainId]
+  );
+  return result.rows;
+}
+
+export async function addCryptoRecord(
+  domainId: number, coin: string, network: string, address: string
+) {
+  await initBlockchainTable();
+  await pool.query(
+    `DELETE FROM orahweb_crypto_records WHERE domain_id = $1 AND coin = $2 AND network = $3`,
+    [domainId, coin.toUpperCase(), network]
+  );
+  const result = await pool.query(
+    `INSERT INTO orahweb_crypto_records (domain_id, coin, network, address)
+     VALUES ($1, $2, $3, $4) RETURNING *`,
+    [domainId, coin.toUpperCase(), network, address.trim()]
+  );
+  return result.rows[0];
+}
+
+export async function deleteCryptoRecord(recordId: number, domainId: number) {
+  await pool.query(
+    `DELETE FROM orahweb_crypto_records WHERE id = $1 AND domain_id = $2`,
+    [recordId, domainId]
+  );
+}
+
+// ─── IPFS / Content Hash ──────────────────────────────────────────────────────
+
+export async function ensureIpfsColumn() {
+  await pool.query(`
+    ALTER TABLE orahweb_domains
+    ADD COLUMN IF NOT EXISTS ipfs_hash TEXT;
+  `).catch(() => {});
+}
+
+export async function setIpfsHash(domainId: number, hash: string | null) {
+  await ensureIpfsColumn();
+  await pool.query(
+    `UPDATE orahweb_domains SET ipfs_hash = $1 WHERE id = $2`,
+    [hash || null, domainId]
+  );
+}
+
+// ─── Transfers ───────────────────────────────────────────────────────────────
+
+export async function initTransfersTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS orahweb_transfers (
+      id            SERIAL PRIMARY KEY,
+      user_id       INTEGER REFERENCES orahweb_users(id) ON DELETE SET NULL,
+      domain_name   TEXT NOT NULL,
+      direction     TEXT NOT NULL,
+      auth_code     TEXT,
+      status        TEXT NOT NULL DEFAULT 'pending',
+      customer_email TEXT,
+      notes         TEXT,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
+}
+
+export async function createTransfer(
+  userId: number | null,
+  domainName: string,
+  direction: string,
+  authCode: string | null,
+  email: string | null
+) {
+  await initTransfersTable();
+  const result = await pool.query(
+    `INSERT INTO orahweb_transfers (user_id, domain_name, direction, auth_code, customer_email)
+     VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+    [userId, domainName.toLowerCase().trim(), direction, authCode, email]
+  );
+  return result.rows[0];
+}
+
+export async function getUserTransfers(userId: number) {
+  await initTransfersTable();
+  const result = await pool.query(
+    `SELECT * FROM orahweb_transfers WHERE user_id = $1 ORDER BY created_at DESC`,
+    [userId]
+  );
+  return result.rows;
+}
+
+export async function renewDomain(domainId: number, userId: number) {
+  const result = await pool.query(
+    `UPDATE orahweb_domains
+     SET expires_at = expires_at + INTERVAL '1 year'
+     WHERE id = $1 AND user_id = $2
+     RETURNING expires_at`,
+    [domainId, userId]
+  );
+  return result.rows[0];
+}
+
 export default pool;

@@ -11,6 +11,7 @@ import { OrahWebLogoFull } from "@/components/OrahWebLogo";
 
 const NAV_LINKS = [
   { href: "/domains", label: "Domains" },
+  { href: "/transfer", label: "Transfer" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

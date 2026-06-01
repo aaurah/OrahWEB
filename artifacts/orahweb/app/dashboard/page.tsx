@@ -149,12 +149,28 @@ export default function DashboardPage() {
                             </span>
                           </td>
                           <td className="px-5 py-4">
-                            <Link
-                              href={`/dashboard/dns/${encodeURIComponent(d.domain_name)}`}
-                              className="text-xs text-blue-600 hover:text-blue-800 font-medium whitespace-nowrap"
-                            >
-                              Manage DNS →
-                            </Link>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <Link
+                                href={`/dashboard/dns/${encodeURIComponent(d.domain_name)}`}
+                                className="text-xs px-2.5 py-1 rounded-lg bg-violet-50 text-violet-700 hover:bg-violet-100 font-semibold transition-colors whitespace-nowrap"
+                              >
+                                DNS
+                              </Link>
+                              {d.type === "web3" && (
+                                <Link
+                                  href={`/dashboard/blockchain/${encodeURIComponent(d.domain_name)}`}
+                                  className="text-xs px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold transition-colors whitespace-nowrap"
+                                >
+                                  ⛓ Blockchain
+                                </Link>
+                              )}
+                              <Link
+                                href={`/dashboard/settings/${encodeURIComponent(d.domain_name)}`}
+                                className="text-xs px-2.5 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 font-semibold transition-colors whitespace-nowrap"
+                              >
+                                Settings
+                              </Link>
+                            </div>
                           </td>
                         </tr>
                       ))}
