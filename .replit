@@ -38,5 +38,11 @@ channel = "stable-25_05"
 [userenv]
 
 [userenv.shared]
-NEXTAUTH_SECRET = "orahweb-dev-secret-change-in-production"
 API_BASE_URL = "http://localhost:8080"
+
+[userenv.production]
+NEXTAUTH_URL = "https://orah-web.replit.app"
+NEXTAUTH_SECRET = "KqjZZW/drqQZMo30dIn94p3HtpdFbZ2Ni5DQfjM8wv4="
+
+[userenv.development]
+NEXTAUTH_SECRET = "orahweb-dev-secret-change-in-production"
