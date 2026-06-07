@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Card } from "@/components/Card";
 import type { ManagedUser } from "@/lib/user-store";
+import { formatRelativeTime } from "@/lib/utils";
 
 type Filter = "all" | "admin" | "user" | "banned";
 
@@ -37,15 +38,6 @@ function formatDate(iso: string): string {
   });
 }
 
-function formatRelative(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return "just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
-}
 
 export function UsersTable({
   initialUsers,
@@ -66,19 +58,24 @@ export function UsersTable({
     return () => clearTimeout(t);
   }, [toast]);
 
-  const stats = useMemo(
-    () =>
-      users.reduce(
-        (acc, u) => {
-          acc.total++;
-          if (u.role === "admin") acc.admins++;
-          if (u.banned) acc.banned++;
-          return acc;
-        },
-        { total: 0, admins: 0, banned: 0 }
-      ),
-    [users]
-  );
+  const { stats, filterCounts } = useMemo(() => {
+    const s = { total: 0, admins: 0, banned: 0 };
+    const c: Record<Filter, number> = { all: 0, admin: 0, user: 0, banned: 0 };
+    for (const u of users) {
+      s.total++;
+      c.all++;
+      if (u.banned) {
+        s.banned++;
+        c.banned++;
+      } else if (u.role === "admin") {
+        s.admins++;
+        c.admin++;
+      } else {
+        c.user++;
+      }
+    }
+    return { stats: s, filterCounts: c };
+  }, [users]);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -91,13 +88,6 @@ export function UsersTable({
       return matchesQuery && matchesFilter;
     });
   }, [users, query, filter]);
-
-  const filterCounts: Record<Filter, number> = {
-    all: users.length,
-    admin: users.filter((u) => u.role === "admin" && !u.banned).length,
-    user: users.filter((u) => u.role === "user" && !u.banned).length,
-    banned: users.filter((u) => u.banned).length,
-  };
 
   async function handleAction(
     userId: string,
@@ -321,7 +311,7 @@ export function UsersTable({
                         </td>
                         <td className="py-4 pr-4 hidden lg:table-cell">
                           <p className="text-sm text-gray-500">
-                            {user.lastLoginAt ? formatRelative(user.lastLoginAt) : "—"}
+                            {user.lastLoginAt ? formatRelativeTime(user.lastLoginAt) : "—"}
                           </p>
                         </td>
                         <td className="py-4 text-right">

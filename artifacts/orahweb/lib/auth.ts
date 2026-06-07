@@ -28,29 +28,14 @@ declare module "next-auth/jwt" {
   }
 }
 
-const DEMO_USERS = [
-  {
-    id: "1",
-    name: "Admin User",
-    email: "admin@orahweb.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-    role: "admin",
-  },
-  {
-    id: "2",
-    name: "Jane Doe",
-    email: "jane@orahweb.com",
-    passwordHash: bcrypt.hashSync("password123", 10),
-    role: "user",
-  },
-];
+// Hash computed once at startup asynchronously — avoids blocking the event loop.
+// All demo users share the same password for convenience.
+const _demoPasswordHashP = bcrypt.hash("password123", 10);
 
-export const PUBLIC_USERS = DEMO_USERS.map(({ id, name, email, role }) => ({
-  id,
-  name,
-  email,
-  role,
-}));
+const DEMO_USERS = [
+  { id: "1", name: "Admin User", email: "admin@orahweb.com", role: "admin" },
+  { id: "2", name: "Jane Doe",   email: "jane@orahweb.com",  role: "user"  },
+] as const;
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -69,7 +54,8 @@ export const authOptions: NextAuthOptions = {
         const user = DEMO_USERS.find((u) => u.email === credentials.email);
         if (!user) return null;
 
-        const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
+        const hash = await _demoPasswordHashP;
+        const isValid = await bcrypt.compare(credentials.password, hash);
         if (!isValid) return null;
 
         return {

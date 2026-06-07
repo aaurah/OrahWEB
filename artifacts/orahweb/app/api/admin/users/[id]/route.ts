@@ -34,5 +34,8 @@ export async function PATCH(
   }
 
   const updated = updateUser(params.id, parsed.data);
+  if (!updated) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
   return NextResponse.json({ user: updated });
 }

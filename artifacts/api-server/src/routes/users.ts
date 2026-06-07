@@ -1,9 +1,22 @@
-import { Router } from "express";
+import { Router, type Request, type Response, type NextFunction } from "express";
 import { db } from "@workspace/db";
 import { usersTable } from "@workspace/db/schema";
 import { asc, eq } from "drizzle-orm";
 
 const router = Router();
+
+function requireApiKey(req: Request, res: Response, next: NextFunction): void {
+  const expected = process.env["INTERNAL_API_KEY"];
+  if (!expected) {
+    next();
+    return;
+  }
+  if (req.headers["authorization"] !== `Bearer ${expected}`) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  next();
+}
 
 router.get("/users", async (_req, res, next) => {
   try {
@@ -27,7 +40,7 @@ router.get("/users", async (_req, res, next) => {
   }
 });
 
-router.patch("/users/:id", async (req, res, next) => {
+router.patch("/users/:id", requireApiKey, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { role, banned } = req.body as { role?: string; banned?: boolean };

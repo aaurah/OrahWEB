@@ -8,7 +8,7 @@ function isAvailable(name: string, tld: string): boolean {
   let h = 0;
   const s = `${name}.${tld}`;
   for (let i = 0; i < s.length; i++) {
-    h = Math.imul(h * 31 + s.charCodeAt(i), 1) | 0;
+    h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
   }
   return Math.abs(h) % 10 >= 3;
 }

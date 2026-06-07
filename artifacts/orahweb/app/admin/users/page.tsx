@@ -7,10 +7,8 @@ import { UsersTable } from "./_users-table";
 export const metadata: Metadata = { title: "Users" };
 
 export default async function AdminUsersPage() {
-  const [session, users] = await Promise.all([
-    getServerSession(authOptions),
-    Promise.resolve(getUsers()),
-  ]);
+  const users = getUsers();
+  const session = await getServerSession(authOptions);
 
   return <UsersTable initialUsers={users} currentUserId={session?.user.id ?? ""} />;
 }

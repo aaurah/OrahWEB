@@ -47,14 +47,3 @@ export function updateUser(
   return { ...user };
 }
 
-export function getUserStats() {
-  return store.reduce(
-    (acc, u) => {
-      acc.total++;
-      if (u.role === "admin") acc.admins++;
-      if (u.banned) acc.banned++;
-      return acc;
-    },
-    { total: 0, admins: 0, banned: 0 }
-  );
-}
