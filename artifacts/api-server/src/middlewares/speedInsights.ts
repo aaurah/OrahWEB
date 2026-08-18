@@ -4,11 +4,13 @@ import { type Request, type Response, type NextFunction } from "express";
  * Speed Insights middleware for Express
  * 
  * This middleware injects Vercel Speed Insights tracking script into HTML responses.
- * It's designed to work with the Vercel Speed Insights service.
+ * Based on @vercel/speed-insights v2.0.0
  * 
- * Note: Speed Insights primarily tracks client-side web vitals (LCP, FID, CLS, etc.)
+ * Note: Speed Insights tracks client-side Web Vitals (LCP, FID, CLS, etc.)
  * For API-only servers that return JSON, this middleware won't have an effect
  * unless the server starts serving HTML pages.
+ * 
+ * @see https://vercel.com/docs/speed-insights
  * 
  * Usage:
  * ```typescript
@@ -27,6 +29,7 @@ export function injectSpeedInsights() {
 
       if (isHtml && typeof body === 'string' && body.includes('</head>')) {
         // Inject Speed Insights script before closing head tag
+        // Uses Vercel's standard script path which is served by Vercel's infrastructure
         const speedInsightsScript = `
   <script>
     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
