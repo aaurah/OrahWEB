@@ -5,6 +5,7 @@ import router from "./routes/index.js";
 import { WebhookHandlers } from "./webhookHandlers.js";
 import { logger } from "./lib/logger";
 import { injectSpeedInsights } from "./middlewares/speedInsights.js";
+import { injectWebAnalytics } from "./middlewares/webAnalytics.js";
 
 const app: Express = express();
 
@@ -54,6 +55,11 @@ app.use(express.urlencoded({ extended: true }));
 // Note: This API server primarily returns JSON. Speed Insights will only
 // track metrics if/when HTML pages are served.
 app.use(injectSpeedInsights());
+
+// Vercel Web Analytics - injects tracking script into HTML responses
+// Note: This API server primarily returns JSON. Web Analytics will only
+// track page views if/when HTML pages are served.
+app.use(injectWebAnalytics());
 
 app.use("/api", router);
 
